@@ -58,36 +58,47 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() async {
-    await FirebaseFirestore.instance.collection("trains").add({
-      "number": trains[0].number,
-      "noOfSeats": trains[0].noOfSeats,
-      "noOfStations": trains[0].noStations,
-      "fareClassess": {
-        "1A": {
-          "noOfSeats": trains[0].fareClassess[ClassesOptions.A1].noOfSeats,
-          "basePrice": trains[0].fareClassess[ClassesOptions.A1].basePrice
-        },
-        "2A": {
-          "noOfSeats": trains[0].fareClassess[ClassesOptions.A2].noOfSeats,
-          "basePrice": trains[0].fareClassess[ClassesOptions.A2].basePrice
-        },
-        "3A": {
-          "noOfSeats": trains[0].fareClassess[ClassesOptions.A3].noOfSeats,
-          "basePrice": trains[0].fareClassess[ClassesOptions.A3].basePrice
-        },
-      },
-      "stopStation": [
-        {
-          "name": trains[0].stopStations[0].name,
-          "departTime": trains[0].stopStations[0].departTime,
-          "arrivalTime": trains[0].stopStations[0].arrivalTime,
-          "order": trains[0].stopStations[0].order,
-          "orderInRoute": trains[0].stopStations[0].orderInRoute,
-          "stopTime": trains[0].stopStations[0].stopTime
-        }
-      ],
-      "weekDayRuns": trains[0].weekDayRuns
-    });
+    final trainCollection = FirebaseFirestore.instance.collection("trains");
+    try {
+      final result = await trainCollection.where('stopStations.name',
+          arrayContains: ["Alexandria", "Tanta"]).get();
+      result.docs.forEach((element) {
+        print("  a7aaa : ${element.data()}");
+      });
+    } catch (ex) {
+      print(ex);
+    }
+
+    // await trainCollection.add({
+    //   "number": trains[0].number,
+    //   "noOfSeats": trains[0].noOfSeats,
+    //   "noOfStations": trains[0].noStations,
+    //   "fareClassess": {
+    //     "1A": {
+    //       "noOfSeats": trains[0].fareClassess[ClassesOptions.A1].noOfSeats,
+    //       "basePrice": trains[0].fareClassess[ClassesOptions.A1].basePrice
+    //     },
+    //     "2A": {
+    //       "noOfSeats": trains[0].fareClassess[ClassesOptions.A2].noOfSeats,
+    //       "basePrice": trains[0].fareClassess[ClassesOptions.A2].basePrice
+    //     },
+    //     "3A": {
+    //       "noOfSeats": trains[0].fareClassess[ClassesOptions.A3].noOfSeats,
+    //       "basePrice": trains[0].fareClassess[ClassesOptions.A3].basePrice
+    //     },
+    //   },
+    //   "stopStation": [
+    //     {
+    //       "name": trains[0].stopStations[0].name,
+    //       "departTime": trains[0].stopStations[0].departTime,
+    //       "arrivalTime": trains[0].stopStations[0].arrivalTime,
+    //       "order": trains[0].stopStations[0].order,
+    //       "orderInRoute": trains[0].stopStations[0].orderInRoute,
+    //       "stopTime": trains[0].stopStations[0].stopTime
+    //     }
+    //   ],
+    //   "weekDayRuns": trains[0].weekDayRuns
+    // });
   }
 
   @override

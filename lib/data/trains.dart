@@ -1,3 +1,4 @@
+import 'package:railways/model/stations.dart';
 import 'package:railways/model/train.dart';
 
 List<Train> trains = [
