@@ -24,3 +24,19 @@ class FareClassess {
 }
 
 enum ClassesOptions { A1, A2, A3 }
+
+class StopStations extends Stations {
+  int orderInRoute;
+  String arrivalTime;
+  String departTime;
+  int stopTime;
+  StopStations(
+      {@required String name,
+      @required int order,
+      bool isCapital,
+      @required this.orderInRoute,
+      @required this.departTime,
+      @required this.arrivalTime,
+      @required this.stopTime})
+      : super(name: name, order: order, isCapital: isCapital);
+}

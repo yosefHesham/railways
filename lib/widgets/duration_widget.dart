@@ -6,7 +6,7 @@ class TripDuration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         stopTime("02 May, Sun", "10:27 PM"),
         SizedBox(
@@ -17,9 +17,6 @@ class TripDuration extends StatelessWidget {
             Text(
               '0h13m',
               style: TextStyle(color: Colors.grey, fontSize: 12),
-            ),
-            SizedBox(
-              height: 4,
             ),
             DistanceLine(),
             Text(

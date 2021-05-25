@@ -6,7 +6,7 @@ class TrainBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
+      width: 80,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           border: Border.all(color: Colors.blue.shade900)),
@@ -16,11 +16,11 @@ class TrainBadge extends StatelessWidget {
           Icon(
             Icons.star,
             color: Colors.yellow,
+            size: 10,
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Colors.blue.shade900, fontWeight: FontWeight.w400),
+            style: TextStyle(color: Colors.blue.shade900, fontSize: 10),
           )
         ],
       ),

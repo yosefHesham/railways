@@ -6,22 +6,13 @@ class DayBox extends StatelessWidget {
   DayBox({@required this.day, @required this.isActive});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 25,
-      height: 25,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(2),
-        border: Border.all(
-          color: isActive ? Colors.green.shade300 : Colors.grey,
-          width: 2,
-        ),
-      ),
-      child: Center(
-        child: Text(
-          day,
-          style:
-              TextStyle(color: isActive ? Colors.green.shade300 : Colors.grey),
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Text(
+        day,
+        style: TextStyle(
+            color: isActive ? Colors.green.shade300 : Colors.grey,
+            fontSize: 12),
       ),
     );
   }
