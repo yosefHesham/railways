@@ -2,7 +2,7 @@ import 'package:railways/model/stations.dart';
 import 'package:railways/model/train.dart';
 
 List<Train> trains = [
-  Train(number: "921", noStations: 4, noOfSeats: 200, weekDayRuns: {
+  Train(number: "921", noOfStations: 4, noOfSeats: 200, weekDayRuns: {
     "sat": true,
     "san": true,
     "mon": true,
@@ -40,17 +40,8 @@ List<Train> trains = [
         arrivalTime: "20:40:00",
         stopTime: 10),
   ], fareClassess: {
-    ClassesOptions.A1: FareClassess(noOfSeats: 60, basePrice: 40),
-    ClassesOptions.A2: FareClassess(noOfSeats: 50, basePrice: 30),
-    ClassesOptions.A3: FareClassess(noOfSeats: 40, basePrice: 50)
+    '1A': FareClassess(noOfSeats: 60, basePrice: 40),
+    '2A': FareClassess(noOfSeats: 50, basePrice: 30),
+    '3A': FareClassess(noOfSeats: 40, basePrice: 50)
   })
 ];
-
-mapEnumToString(ClassesOptions options) {
-  if (options == ClassesOptions.A1) {
-    return "1A";
-  } else if (options == ClassesOptions.A2) {
-    return "2A";
-  }
-  return "3A";
-}

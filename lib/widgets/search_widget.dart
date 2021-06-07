@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:railways/public/colors.dart';
+import 'package:railways/screens/departion_query_screen.dart';
+import 'package:railways/widgets/custom_text_field.dart';
 
-class SearchWidget extends StatelessWidget {
+class SearchWidget extends StatefulWidget {
   // final textFieldPadding = const EdgeInsets.all(5);
-  final textFieldMargin = const EdgeInsets.only(top: 8);
+
+  @override
+  _SearchWidgetState createState() => _SearchWidgetState();
+}
+
+class _SearchWidgetState extends State<SearchWidget> {
+  var destinationController = TextEditingController(text: "Alex");
+
+  var departionController = TextEditingController(text: "Cairo");
+
+  void saveDepartionStation(String station) {
+    setState(() {
+      departionController.text = station;
+    });
+  }
+
+  void saveDestinationController(String station) {
+    setState(() {
+      destinationController.text = station;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,10 +41,27 @@ class SearchWidget extends StatelessWidget {
         child: Stack(alignment: AlignmentDirectional.center, children: [
           Column(
             children: [
-              buildTextField(Icons.adjust, "Departion"),
-              buildTextField(Icons.location_on_rounded, "Destination"),
-              buildTextField(Icons.calendar_today_sharp,
-                  DateFormat.yMEd().format(DateTime.now()).toString()),
+              CustomTextField(
+                controller: departionController,
+                icon: Icons.adjust,
+                hintText: "Departion",
+                onFieldTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) =>
+                        StationQuery("Departion", saveDepartionStation))),
+              ),
+              CustomTextField(
+                  controller: destinationController,
+                  icon: Icons.location_on_rounded,
+                  hintText: "Destination",
+                  onFieldTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (ctx) => StationQuery(
+                              "Destination", saveDestinationController)))),
+              CustomTextField(
+                  controller: destinationController,
+                  icon: Icons.calendar_today_sharp,
+                  hintText:
+                      DateFormat.yMEd().format(DateTime.now()).toString()),
               SizedBox(
                 height: 10,
               ),
@@ -56,42 +96,6 @@ class SearchWidget extends StatelessWidget {
           )),
     );
   }
-
-  Widget buildTextField(IconData icon, String hintText) {
-    print(hintText);
-    return Builder(builder: (ctx) {
-      return Container(
-        // padding: textFieldPadding,
-        margin: textFieldMargin,
-        height: 40,
-        width: MediaQuery.of(ctx).size.width * .95,
-        child: TextField(
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
-              hintText: hintText,
-              hintStyle: TextStyle(color: hintTextFieldColor),
-              prefixIcon: Icon(
-                icon,
-                color: textFieldColor,
-                size: 18,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                borderSide: BorderSide(color: textFieldColor),
-              ),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: textFieldFillColor)),
-              filled: true,
-              fillColor: textFieldFillColor,
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(color: textFieldFillColor),
-                  borderRadius: BorderRadius.circular(8))),
-        ),
-      );
-    });
-  }
 }
 
 Widget switchStationsButton() {
@@ -102,13 +106,13 @@ Widget switchStationsButton() {
     child: Container(
       height: 40,
       width: 40,
-      decoration:
-          BoxDecoration(color: textFieldFillColor, shape: BoxShape.circle),
+      decoration: BoxDecoration(
+          color: Public.textFieldFillColor, shape: BoxShape.circle),
       child: Container(
         height: 20,
         width: 20,
         decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-        child: Icon(Icons.swap_vert, color: textFieldColor),
+        child: Icon(Icons.swap_vert, color: Public.textFieldColor),
       ),
     ),
   );

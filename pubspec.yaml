@@ -58,10 +58,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-   - family: Walsheim
-     fonts:
-       - asset: assets/fonts/walsheimbold.otf
-       - asset: assets/fonts/walsheimregular.otf
+    - family: Walsheim
+      fonts:
+        - asset: assets/fonts/walsheimbold.otf
+        - asset: assets/fonts/walsheimregular.otf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

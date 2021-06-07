@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         }
       },
       home: SplashScreen(),
+      // routes: {StationQuery.routeName: (ctx) => StationQuery()},
       title: 'RailWays',
     );
   }

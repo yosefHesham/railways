@@ -28,6 +28,15 @@
 
 import 'package:flutter/material.dart';
 
-var textFieldColor = Color(0xffa1a9c3);
-var hintTextFieldColor = Color(0xff425486);
-var textFieldFillColor = Color(0xfff1f2f6);
+class Public {
+// for textfield and border
+  static var textFieldColor = Color(0xffa1a9c3);
+// for hintText in text field
+  static var hintTextFieldColor = Color(0xff425486);
+
+  /// textfield background (fill)
+  static var textFieldFillColor = Color(0xfff1f2f6);
+
+  /// for buttons
+  static var accent = Color(0xfffa6b6b);
+}

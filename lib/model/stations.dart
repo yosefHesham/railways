@@ -22,4 +22,13 @@ class StopStations extends Stations {
       @required this.arrivalTime,
       @required this.stopTime})
       : super(name: name, order: order, isCapital: isCapital);
+
+  StopStations.fromMap(Map<String, dynamic> stations) {
+    name = stations['name'];
+    order = stations['order'];
+    orderInRoute = stations['orderInRoute'];
+    departTime = stations['departTime'];
+    arrivalTime = stations['arrivalTime'];
+    stopTime = stations['stopStime'];
+  }
 }
