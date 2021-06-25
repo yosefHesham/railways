@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:railways/providers/trains_provider.dart';
 
 class DegreeBox extends StatelessWidget {
   final String degree;
   final num price;
-  DegreeBox({@required this.degree, @required this.price});
+  final String trainNum;
+  DegreeBox(
+      {@required this.degree, @required this.price, @required this.trainNum});
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () => print("y"),
+        onTap: () => Provider.of<TrainsProvider>(context, listen: false)
+            .showBookingOptions(trainNum),
         child: Container(
           width: 60,
           height: 50,

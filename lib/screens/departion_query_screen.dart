@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:railways/public/colors.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
+// ignore: must_be_immutable
 class StationQuery extends StatefulWidget {
   static const routeName = '/stationQuery';
 
   String hintText;
+
+  // function to save text to searchtextField
   final saveStation;
 
   StationQuery(this.hintText, this.saveStation);
@@ -56,8 +59,6 @@ class _StationQueryState extends State<StationQuery> {
                       title: new Text(suggestion),
                     ),
                     padding: EdgeInsets.all(8.0)),
-                // itemSorter: (a, b) => 1,
-                // suggestions: _suggestions,
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: controller,
                   onSubmitted: (v) {

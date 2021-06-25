@@ -17,25 +17,34 @@ class Train {
       @required this.weekDayRuns});
 
   Train.fromMap(Map<String, dynamic> trains) {
-    number = trains['number'];
-    noOfSeats = trains['noOfSeats'];
-    noOfStations = trains['noOfStations'];
-    weekDayRuns = trains['weekDayRuns'];
-    fareClassess = trains['fareClasses'];
-    stopStations = (trains['stopStation'] as List<Map<String, dynamic>>)
+    Map<String, FareClassess> classes = {};
+    Map<String, bool> dayRuns = {};
+    (trains['fareClassess'] as Map<String, dynamic>).forEach((key, value) {
+      classes[key] = FareClassess.fromMap(trains['fareClassess'][key]);
+    });
+    (trains['weekDayRuns'] as Map<String, dynamic>).forEach((key, value) {
+      dayRuns[key] = value;
+    });
+
+    number = trains['number'].toString();
+    noOfSeats = trains['noOfSeats'] as int;
+    noOfStations = trains['noOfStations'] as int;
+    weekDayRuns = dayRuns;
+    fareClassess = classes;
+
+    stopStations = (trains['stopStation'] as List<dynamic>)
         .map((e) => StopStations.fromMap(e))
         .toList();
   }
 }
 
 class FareClassess {
-  int noOfSeats;
+  num noOfSeats;
   num basePrice;
   FareClassess({@required this.noOfSeats, this.basePrice});
-
-  FareClassess.fromMap(Map<String, dynamic> classes) {
-    noOfSeats = classes['noOfSeats'];
-    basePrice = classes['basePrice'];
+  FareClassess.fromMap(Map<String, dynamic> fareClass) {
+    noOfSeats = fareClass['noOfSeats'];
+    basePrice = fareClass['basePrice'];
   }
 }
 

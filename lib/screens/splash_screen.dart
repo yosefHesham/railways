@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/assets.dart';
 import 'package:railways/screens/search_screen.dart';
 
@@ -18,22 +20,23 @@ class _SplashScreenState extends State<SplashScreen> {
       setState(() {
         _textVisible = true;
       });
-      Future.delayed(const Duration(seconds: 5)).then((value) {
+      final repo = Provider.of<TrainsProvider>(context, listen: false);
+
+      repo.getTrains().then((value) {
         Navigator.of(context).pushReplacementNamed(SearchScreen.routeName);
-        print("value");
         setState(() {
-          print("second");
           _textVisible = false;
         });
       });
+      // Future.delayed(const Duration(seconds: 5)).then((value) {
+      //   Navigator.of(context).pushReplacementNamed(SearchScreen.routeName);
+      //   print("value");
+      //   setState(() {
+      //     print("second");
+      //     _textVisible = false;
+      //   });
+      // });
     });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-
-    super.dispose();
   }
 
   @override

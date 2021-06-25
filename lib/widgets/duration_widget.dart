@@ -1,26 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:railways/model/stations.dart';
 
 import 'distance_line.dart';
 
-class TripDuration extends StatelessWidget {
+class TripDuration extends StatefulWidget {
+  final StopStations fromStation, toStation;
+  final String date;
+  TripDuration(
+      {@required this.fromStation, @required this.toStation, this.date});
+
   @override
+  _TripDurationState createState() => _TripDurationState();
+}
+
+class _TripDurationState extends State<TripDuration> {
+  List<int> duration = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDuration();
+  }
+
+  @override
+  getDuration() {
+    List<String> fromStString = widget.fromStation.departTime.split(':');
+    List<int> fromTime = fromStString.map((e) => int.parse(e)).toList();
+    List<String> toStString = widget.toStation.arrivalTime.split(':');
+    List<int> toTime = toStString.map((e) => int.parse(e)).toList();
+
+    setState(() {
+      duration.add(
+        toTime[0] - fromTime[0],
+      );
+      duration.add(toTime[1] - fromTime[1]);
+    });
+  }
+
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        stopTime("02 May, Sun", "10:27 PM"),
+        stopTime(widget.date, widget.fromStation.departTime),
         SizedBox(
           width: 20,
         ),
         Column(
           children: [
             Text(
-              '0h13m',
+              '${duration[0] % 24}h ${(duration[1].abs())}m',
               style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
             DistanceLine(),
             Text(
-              '2 stops',
+              '${widget.toStation.orderInRoute - widget.fromStation.orderInRoute}',
               style: TextStyle(color: Colors.grey, fontSize: 12),
             )
           ],
@@ -28,7 +61,7 @@ class TripDuration extends StatelessWidget {
         SizedBox(
           width: 20,
         ),
-        stopTime("02 May, Sun", "10:40 PM"),
+        stopTime(widget.date, widget.toStation.arrivalTime),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:railways/helpers/map_dayruns.dart';
 
 class DayBox extends StatelessWidget {
   final String day;
@@ -19,29 +20,16 @@ class DayBox extends StatelessWidget {
 }
 
 class DayBoxRow extends StatelessWidget {
+  DayBoxRow(this.weekDayRuns);
+  final Map<String, bool> weekDayRuns;
+
   @override
   Widget build(BuildContext context) {
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: days
+        children: mapDays(weekDayRuns)
             .map((dayData) =>
                 DayBox(day: dayData.day, isActive: dayData.isActive))
             .toList());
   }
-}
-
-List<DayRuns> days = [
-  DayRuns(day: "S", isActive: true),
-  DayRuns(day: "S", isActive: true),
-  DayRuns(day: "M", isActive: false),
-  DayRuns(day: "T", isActive: true),
-  DayRuns(day: "W", isActive: false),
-  DayRuns(day: "T", isActive: true),
-  DayRuns(day: "F", isActive: false)
-];
-
-class DayRuns {
-  String day;
-  bool isActive;
-  DayRuns({@required this.day, @required this.isActive});
 }

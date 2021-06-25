@@ -1,61 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:railways/widgets/date_box.dart';
-import 'package:railways/widgets/degree_box.dart';
-import 'package:railways/widgets/duration_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:railways/providers/trains_provider.dart';
+import 'package:railways/widgets/booking_details.dart';
+import 'package:railways/widgets/train_card.dart';
 
 class SearchResultScreen extends StatelessWidget {
+  static const routeName = '/serachResult';
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                trainNumber(),
-                SizedBox(
-                  width: 60,
-                ),
-                DayBoxRow(),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TripDuration(),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                DegreeBox(degree: '1A', price: 105),
-                DegreeBox(degree: '2A', price: 80),
-                DegreeBox(degree: '3A', price: 50)
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget trainNumber() {
-    return InkWell(
-        onTap: () => print("x"),
-        child: Row(children: [
-          Text(
-            '02461',
-            style: TextStyle(color: Colors.blue.shade900, fontSize: 18),
-          ),
-          Icon(
-            Icons.arrow_forward_ios_outlined,
-            color: Colors.blue.shade900,
-            size: 18,
-          )
-        ]));
+    return Scaffold(
+        body: Consumer<TrainsProvider>(
+            builder: (ctx, trainProv, _) => ListView.builder(
+                itemCount: trainProv.trains.length,
+                itemBuilder: (ctx, i) => Column(children: [
+                      TrainCard(trainProv.trains[i]),
+                      trainProv.selectedTrain == trainProv.trains[i]
+                          ? Visibility(
+                              child: BookingDetails(
+                                  trainProv.trains[i].weekDayRuns),
+                              visible: trainProv.isBookingVisible,
+                            )
+                          : Container()
+                    ]))));
   }
 }

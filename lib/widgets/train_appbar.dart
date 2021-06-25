@@ -15,7 +15,6 @@ class _TrainAppBarState extends State<TrainAppBar> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero).then((value) => setState(() {
           isVisible = true;

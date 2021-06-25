@@ -25,10 +25,10 @@ class StopStations extends Stations {
 
   StopStations.fromMap(Map<String, dynamic> stations) {
     name = stations['name'];
-    order = stations['order'];
-    orderInRoute = stations['orderInRoute'];
-    departTime = stations['departTime'];
-    arrivalTime = stations['arrivalTime'];
-    stopTime = stations['stopStime'];
+    order = stations['order'] as int;
+    orderInRoute = stations['orderInRoute'] as int;
+    departTime = stations['departTime'].toString();
+    arrivalTime = stations['arrivalTime'].toString();
+    stopTime = stations['stopTime'] as int;
   }
 }
