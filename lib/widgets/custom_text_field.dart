@@ -7,8 +7,9 @@ class CustomTextField extends StatelessWidget {
       @required this.icon,
       @required this.hintText,
       this.onFieldTap,
+      this.validateField,
       this.onFieldSubmit,
-      @required this.controller})
+      this.controller})
       : super(key: key);
 
   final IconData icon;
@@ -16,12 +17,12 @@ class CustomTextField extends StatelessWidget {
   final Function onFieldTap;
   final TextEditingController controller;
   final Function onFieldSubmit;
+  final Function validateField;
 
   @override
   Widget build(BuildContext context) {
     final textFieldMargin = const EdgeInsets.only(top: 8);
 
-    print(hintText);
     return Builder(builder: (ctx) {
       return Container(
         // padding: textFieldPadding,
@@ -29,21 +30,26 @@ class CustomTextField extends StatelessWidget {
         margin: textFieldMargin,
         height: 40,
         width: MediaQuery.of(ctx).size.width * .95,
-        child: TextField(
+        child: TextFormField(
           style: TextStyle(color: Public.hintTextFieldColor),
           controller: controller,
-          onSubmitted: (v) {},
+          validator: (v) => validateField(v),
+          onSaved: (v) => onFieldSubmit(v),
           onTap: onFieldTap,
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10.0),
+              contentPadding:
+                  EdgeInsets.only(left: 11, right: 3, top: 14, bottom: 14),
+              errorStyle: TextStyle(fontSize: 9, height: 0.3),
               hintText: hintText,
               hintStyle: TextStyle(color: Public.hintTextFieldColor),
-              prefixIcon: Icon(
-                icon,
-                color: Public.textFieldColor,
-                size: 18,
-              ),
+              prefixIcon: icon == null
+                  ? null
+                  : Icon(
+                      icon,
+                      color: Public.textFieldColor,
+                      size: 18,
+                    ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 borderSide: BorderSide(color: Public.textFieldColor),

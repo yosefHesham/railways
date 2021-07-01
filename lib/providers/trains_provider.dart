@@ -10,15 +10,35 @@ class TrainsProvider with ChangeNotifier {
   String _fromStation;
   String _toStation;
   String _date;
+  String _bookDate;
   bool _isBookingVisible = false;
   Train _selectedTrain;
+  Map<String, dynamic> _selectedClass;
 
   bool get isBookingVisible {
     return _isBookingVisible;
   }
 
+  Map<String, dynamic> get selectedClass {
+    return _selectedClass;
+  }
+
   Train get selectedTrain {
     return _selectedTrain;
+  }
+
+  String get bookDate {
+    return _bookDate;
+  }
+
+  StopStations get fromStationOfSelectedTrain {
+    return _selectedTrain.stopStations
+        .firstWhere((element) => element.name == fromStation);
+  }
+
+  StopStations get toStationOfSelectedTrain {
+    return _selectedTrain.stopStations
+        .firstWhere((element) => element.name == toStation);
   }
 
   List<Train> get trains {
@@ -42,7 +62,6 @@ class TrainsProvider with ChangeNotifier {
   }
 
   void showBookingOptions(String trainNum) {
-    print("number: $trainNum");
     _selectedTrain =
         _trains.firstWhere((element) => element.number == trainNum);
     if (_selectedTrain.number == trainNum) {
@@ -51,23 +70,30 @@ class TrainsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void selectBookingDate(String date) {
+    _bookDate = date;
+    notifyListeners();
+  }
+
+  void selectClass(Map<String, int> degree) {
+    _selectedClass = degree;
+    notifyListeners();
+  }
+
   void fromTo(String from, String to, String date) {
-    print("date:: ${date.extractDay()}");
     _fromStation = from;
     _toStation = to;
     _date = date;
-    StopStations fromStation;
-    StopStations toStation;
 
     _trains = _trains.where((train) {
-      print("trainNo: ${train.number}");
-      print("wedensday: ${train.weekDayRuns[date.extractDay()]}");
+      StopStations fromStation;
+      StopStations toStation;
+
       if (train.weekDayRuns[date.extractDay()]) {
         train.stopStations.forEach((station) {
           if (station.name.toLowerCase() == from.toLowerCase()) {
             fromStation = station;
-          }
-          if (station.name.toLowerCase() == to.toLowerCase()) {
+          } else if (station.name.toLowerCase() == to.toLowerCase()) {
             toStation = station;
           }
         });
@@ -75,8 +101,9 @@ class TrainsProvider with ChangeNotifier {
           if (toStation.orderInRoute < fromStation.orderInRoute) {
             return false;
           }
+          return true;
         }
-        return true;
+        return false;
       }
       return false;
     }).toList();

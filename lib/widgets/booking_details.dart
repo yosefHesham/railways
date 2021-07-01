@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:railways/public/colors.dart';
+import 'package:provider/provider.dart';
+import 'package:railways/providers/trains_provider.dart';
+import 'package:railways/screens/booking_screen.dart';
 
 // ignore: must_be_immutable
 class BookingDetails extends StatefulWidget {
@@ -15,6 +17,8 @@ class _BookingDetailsState extends State<BookingDetails> {
   @override
   initState() {
     super.initState();
+
+    /// this function generate dates in range of a week based on weekdayruns
     mapWeekDaysToDates(widget.weekDayRuns);
   }
 
@@ -34,7 +38,7 @@ class _BookingDetailsState extends State<BookingDetails> {
 
   Widget buildBookingRow(String date) {
     return Column(children: [
-      Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(date),
@@ -48,7 +52,11 @@ class _BookingDetailsState extends State<BookingDetails> {
                 borderRadius: BorderRadius.circular(5)),
             child: Center(
               child: InkWell(
-                onTap: () => null,
+                onTap: () {
+                  Navigator.of(context).pushNamed(BookingScreen.routeName);
+                  Provider.of<TrainsProvider>(context, listen: false)
+                      .selectBookingDate(date);
+                },
                 child: Text(
                   'Book now',
                   style: TextStyle(color: Colors.blue),
@@ -62,7 +70,6 @@ class _BookingDetailsState extends State<BookingDetails> {
 
   void mapWeekDaysToDates(Map<String, bool> weekDayRuns) {
     List<String> workingDays = [];
-    print(weekDayRuns);
     for (int i = 0; i < 7; i++) {
       String date = DateFormat('EEE, d MMM')
           .format(DateTime.now().add(Duration(days: i)))
@@ -71,7 +78,6 @@ class _BookingDetailsState extends State<BookingDetails> {
     }
     dates.forEach((d) {
       List day = d.split(',');
-      print("day: $day");
       if (weekDayRuns[day[0].toLowerCase()]) {
         workingDays.add(d);
       }

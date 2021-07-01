@@ -16,7 +16,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 3)).then((_) {
-      print("first");
       setState(() {
         _textVisible = true;
       });

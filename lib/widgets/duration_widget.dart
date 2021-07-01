@@ -17,12 +17,10 @@ class _TripDurationState extends State<TripDuration> {
   List<int> duration = [];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getDuration();
   }
 
-  @override
   getDuration() {
     List<String> fromStString = widget.fromStation.departTime.split(':');
     List<int> fromTime = fromStString.map((e) => int.parse(e)).toList();

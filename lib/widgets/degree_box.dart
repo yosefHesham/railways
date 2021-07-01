@@ -13,8 +13,12 @@ class DegreeBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
-        onTap: () => Provider.of<TrainsProvider>(context, listen: false)
-            .showBookingOptions(trainNum),
+        onTap: () {
+          Provider.of<TrainsProvider>(context, listen: false)
+              .showBookingOptions(trainNum);
+          Provider.of<TrainsProvider>(context, listen: false)
+              .selectClass({'degree': price});
+        },
         child: Container(
           width: 60,
           height: 50,

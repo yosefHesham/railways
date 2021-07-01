@@ -45,8 +45,6 @@ class _StationQueryState extends State<StationQuery> {
                       element.toLowerCase().contains(input.toLowerCase()));
                 },
                 onSuggestionSelected: (value) {
-                  print("a7aaaa $value");
-
                   setState(() {
                     controller.text = value;
                     FocusScope.of(context).requestFocus(fieldNode);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/providers/trains_provider.dart';
+import 'package:railways/screens/booking_screen.dart';
 import 'package:railways/screens/search_result.dart';
 import 'package:railways/screens/search_screen.dart';
 import 'package:railways/screens/splash_screen.dart';
@@ -41,7 +42,10 @@ class MyApp extends StatelessWidget {
           home: SplashScreen(),
           // routes: {StationQuery.routeName: (ctx) => StationQuery()},
           title: 'RailWays',
-          routes: {SearchResultScreen.routeName: (ctx) => SearchResultScreen()},
+          routes: {
+            SearchResultScreen.routeName: (ctx) => SearchResultScreen(),
+            BookingScreen.routeName: (ctx) => BookingScreen()
+          },
         ));
   }
 }
