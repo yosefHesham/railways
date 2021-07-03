@@ -1,5 +1,5 @@
 class PaymentFieldValidator {
-  static String validateName(String value) {
+  static validateName(String value) {
     if (_isFieldEmpty(value)) {
       return "Required Field";
     } else if (value.length < 3) {
@@ -8,25 +8,25 @@ class PaymentFieldValidator {
     return null;
   }
 
-  static String validateCardNum(String value) {
+  static validateCardNum(String value) {
     if (_isFieldEmpty(value)) {
       return "Required Field";
     }
   }
 
-  static String validateCVV(String value) {
+  static validateCVV(String value) {
     if (_isFieldEmpty(value)) {
       return "Required Field";
     }
   }
 
-  static String validatePhoneNumber(String value) {
+  static validatePhoneNumber(String value) {
     if (_isFieldEmpty(value)) {
       return "Required Field";
     }
   }
 
-  static String validateExpireDate(String value) {
+  static validateExpireDate(String value) {
     if (_isFieldEmpty(value)) {
       return "Required Field";
     }

@@ -2,10 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:railways/providers/auth_provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/screens/booking_screen.dart';
+import 'package:railways/screens/home_screen.dart';
+import 'package:railways/screens/profile.dart';
 import 'package:railways/screens/search_result.dart';
 import 'package:railways/screens/search_screen.dart';
+import 'package:railways/screens/sign_in_screen.dart';
+import 'package:railways/screens/sign_up_email.dart';
 import 'package:railways/screens/splash_screen.dart';
 
 void main() async {
@@ -18,8 +23,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (ctx) => TrainsProvider(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: TrainsProvider()),
+          ChangeNotifierProvider.value(value: AuthProvider())
+        ],
         child: MaterialApp(
           theme: ThemeData(
               fontFamily: "Walsheim",
@@ -44,7 +52,11 @@ class MyApp extends StatelessWidget {
           title: 'RailWays',
           routes: {
             SearchResultScreen.routeName: (ctx) => SearchResultScreen(),
-            BookingScreen.routeName: (ctx) => BookingScreen()
+            BookingScreen.routeName: (ctx) => BookingScreen(),
+            HomeScreen.routeName: (ctx) => HomeScreen(),
+            SignUpEmailScreen.routeName: (ctx) => SignUpEmailScreen(),
+            SignInScreen.routeName: (ctx) => SignInScreen(),
+            ProfileScreen.routeName: (ctx) => ProfileScreen()
           },
         ));
   }

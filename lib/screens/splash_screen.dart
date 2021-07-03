@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/assets.dart';
-import 'package:railways/screens/search_screen.dart';
+import 'package:railways/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
       final repo = Provider.of<TrainsProvider>(context, listen: false);
 
       repo.getTrains().then((value) {
-        Navigator.of(context).pushReplacementNamed(SearchScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
         setState(() {
           _textVisible = false;
         });

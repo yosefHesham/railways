@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "154162063219-o2qcu5ms7sfi9rc01magn42udsrjhspm.apps.googleusercontent.com",
+          "client_id": "154162063219-m37bga0h0uqtu1m7irbppdsqj4h4hjki.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.railways",
-            "certificate_hash": "96a94e242585030cd63bb2a096b8f51f7122b42b"
+            "certificate_hash": "6142a599123b5701c0220b6ed253e0e1c77775b7"
           }
         },
         {

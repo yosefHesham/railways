@@ -131,7 +131,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   source: trainProv.fromStation,
                   destination: trainProv.toStation,
                   price: trainProv.selectedClass.entries.first.value,
-                  userName: name,
+                  name: name,
                   userId: DateTime.now().toIso8601String());
               final docId = FirebaseFirestore.instance
                   .collection('Tickets')

@@ -9,6 +9,8 @@ class CustomTextField extends StatelessWidget {
       this.onFieldTap,
       this.validateField,
       this.onFieldSubmit,
+      this.focusNode,
+      this.changeFocus,
       this.controller})
       : super(key: key);
 
@@ -18,6 +20,8 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final Function onFieldSubmit;
   final Function validateField;
+  final FocusNode focusNode;
+  final Function changeFocus;
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +35,12 @@ class CustomTextField extends StatelessWidget {
         height: 40,
         width: MediaQuery.of(ctx).size.width * .95,
         child: TextFormField(
+          focusNode: focusNode,
           style: TextStyle(color: Public.hintTextFieldColor),
           controller: controller,
           validator: (v) => validateField(v),
           onSaved: (v) => onFieldSubmit(v),
+          onFieldSubmitted: (_) => changeFocus(),
           onTap: onFieldTap,
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
