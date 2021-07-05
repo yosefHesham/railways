@@ -13,11 +13,16 @@ class AuthProvider with ChangeNotifier {
     await _authRepo.signUp(email, password, name);
   }
 
+  Future<void> signOut() async {
+    await _authRepo.signOut();
+  }
+
   User get user {
     return FirebaseAuth.instance.currentUser;
   }
 
   Stream<User> get authState {
+    print("authState ${_authRepo.authState()}");
     return _authRepo.authState();
   }
 }

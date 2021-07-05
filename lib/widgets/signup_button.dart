@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SignUpEmail extends StatelessWidget {
+class SignUpButton extends StatelessWidget {
   final String text;
   final Function onpressed;
 
-  SignUpEmail({this.text, this.onpressed});
+  SignUpButton({this.text, this.onpressed});
 
   @override
   Widget build(BuildContext context) {

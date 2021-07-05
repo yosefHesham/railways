@@ -96,7 +96,7 @@ class SignUpScreen extends StatelessWidget {
                 SizedBox(
                   height: 50,
                 ),
-                SignUpButton(
+                GoogleSignButton(
                   text: 'Continue with Google ',
                   onPressed: () async {
                     try {
@@ -114,7 +114,7 @@ class SignUpScreen extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                SignUpEmail(
+                SignUpButton(
                   text: 'Sign Up with Email',
                   onpressed: () {
                     // Navigate to the second screen using a named route.

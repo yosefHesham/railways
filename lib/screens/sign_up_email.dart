@@ -78,16 +78,24 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                   icon: null,
                   hintText: "Enter your name",
                   onFieldSubmit: _saveName,
+                  inputAction: TextInputAction.next,
                   validateField: SignUpFormValidator.validateName,
+                  changeFocus: () {
+                    FocusScope.of(context).requestFocus(_mailFocusNode);
+                  },
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 CustomTextField(
                   focusNode: _mailFocusNode,
+                  inputAction: TextInputAction.next,
                   icon: null,
                   hintText: "Enter your email",
                   onFieldSubmit: _saveMail,
                   validateField: SignUpFormValidator.validateMail,
                   changeFocus: () {
-                    FocusScope.of(context).requestFocus(_mailFocusNode);
+                    FocusScope.of(context).requestFocus(_paswordFocusNode);
                   },
                 ),
                 SizedBox(
@@ -97,16 +105,14 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                   focusNode: _paswordFocusNode,
                   icon: null,
                   hintText: "Enter your password",
+                  inputAction: TextInputAction.go,
                   onFieldSubmit: _savePassword,
                   validateField: SignUpFormValidator.validatePassword,
-                  changeFocus: () {
-                    FocusScope.of(context).requestFocus(_paswordFocusNode);
-                  },
                 ),
                 SizedBox(
                   height: 30,
                 ),
-                SignUpEmail(
+                SignUpButton(
                   onpressed: () async {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();

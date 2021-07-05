@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:railways/public/colors.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 
-class SignUpButton extends StatelessWidget {
+class GoogleSignButton extends StatelessWidget {
   final Function onPressed;
   final String text;
 
-  SignUpButton({this.text, this.onPressed});
+  GoogleSignButton({this.text, this.onPressed});
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:railways/public/colors.dart';
 
@@ -11,6 +12,7 @@ class CustomTextField extends StatelessWidget {
       this.onFieldSubmit,
       this.focusNode,
       this.changeFocus,
+      this.inputAction,
       this.controller})
       : super(key: key);
 
@@ -22,6 +24,7 @@ class CustomTextField extends StatelessWidget {
   final Function validateField;
   final FocusNode focusNode;
   final Function changeFocus;
+  final TextInputAction inputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,7 @@ class CustomTextField extends StatelessWidget {
           onSaved: (v) => onFieldSubmit(v),
           onFieldSubmitted: (_) => changeFocus(),
           onTap: onFieldTap,
+          textInputAction: inputAction,
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
               contentPadding:

@@ -84,7 +84,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(
                   height: 30,
                 ),
-                SignUpEmail(
+                SignUpButton(
                   //  onpressed: () {},
                   text: 'sign in',
                 ),

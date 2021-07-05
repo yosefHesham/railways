@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/providers/auth_provider.dart';
@@ -9,14 +10,22 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<User>(
         stream: Provider.of<AuthProvider>(context, listen: false).authState,
-        builder: (context, snapShot) => snapShot == null
-            ? SignUpScreen()
-            : Scaffold(
-                body: Center(
-                  child: Text('Profile Screen'),
-                ),
-              ));
+        builder: (context, snapShot) {
+          print("data ${snapShot.data} ");
+          return snapShot.data == null
+              ? SignUpScreen()
+              : Scaffold(
+                  body: Center(
+                  child: TextButton(
+                    child: Text('Sign Out'),
+                    onPressed: () async {
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .signOut();
+                    },
+                  ),
+                ));
+        });
   }
 }

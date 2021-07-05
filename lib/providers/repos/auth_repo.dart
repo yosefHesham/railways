@@ -9,6 +9,7 @@ class AuthRepo {
     try {
       final googleSign = GoogleSignIn();
       final googleAccount = await googleSign.signIn();
+
       print(googleAccount.displayName);
       if (googleAccount == null) {
         throw GoogleException("Cancelled by user");
@@ -53,10 +54,14 @@ class AuthRepo {
     }
   }
 
-  // Future<AuthblocState> signOut() async {
-  //   await _auth.signOut();
-  //   return SignedOutState();
-  // }
+  Future<void> signOut() async {
+    final googleSign = GoogleSignIn();
+    if (await googleSign.isSignedIn()) {
+      await googleSign.signOut();
+    }
+
+    await _auth.signOut();
+  }
 
   Stream<User> authState() {
     return _auth.authStateChanges();

@@ -24,6 +24,7 @@ class TrainsProvider with ChangeNotifier {
   }
 
   Train get selectedTrain {
+    print("selectedTrain :${_selectedTrain}");
     return _selectedTrain;
   }
 

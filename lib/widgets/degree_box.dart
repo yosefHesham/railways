@@ -17,7 +17,7 @@ class DegreeBox extends StatelessWidget {
           Provider.of<TrainsProvider>(context, listen: false)
               .showBookingOptions(trainNum);
           Provider.of<TrainsProvider>(context, listen: false)
-              .selectClass({'degree': price});
+              .selectClass({degree: price});
         },
         child: Container(
           width: 60,

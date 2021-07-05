@@ -1,11 +1,8 @@
-import 'package:flutter/foundation.dart';
-
 class Stations {
   String name;
   int order;
   bool isCapital;
-  Stations(
-      {@required this.name, @required this.order, @required this.isCapital});
+  Stations({this.name, this.order, this.isCapital});
 }
 
 class StopStations extends Stations {
@@ -13,14 +10,16 @@ class StopStations extends Stations {
   String arrivalTime;
   String departTime;
   int stopTime;
+  Map<String, dynamic> numberOfSeatsPerDay;
   StopStations(
-      {@required String name,
-      @required int order,
+      {String name,
+      int order,
       bool isCapital,
-      @required this.orderInRoute,
-      @required this.departTime,
-      @required this.arrivalTime,
-      @required this.stopTime})
+      this.orderInRoute,
+      this.departTime,
+      this.arrivalTime,
+      this.numberOfSeatsPerDay,
+      this.stopTime})
       : super(name: name, order: order, isCapital: isCapital);
 
   StopStations.fromMap(Map<String, dynamic> stations) {
