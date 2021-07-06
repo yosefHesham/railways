@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/providers/auth_provider.dart';
+import 'package:railways/providers/journey_provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/screens/booking_screen.dart';
 import 'package:railways/screens/home_screen.dart';
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: TrainsProvider()),
-          ChangeNotifierProvider.value(value: AuthProvider())
+          ChangeNotifierProvider.value(value: AuthProvider()),
+          ChangeNotifierProvider.value(value: JourneyProvider())
         ],
         child: MaterialApp(
           theme: ThemeData(

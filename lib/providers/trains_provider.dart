@@ -24,7 +24,7 @@ class TrainsProvider with ChangeNotifier {
   }
 
   Train get selectedTrain {
-    print("selectedTrain :${_selectedTrain}");
+    print("selectedTrain :$_selectedTrain");
     return _selectedTrain;
   }
 
@@ -43,7 +43,7 @@ class TrainsProvider with ChangeNotifier {
   }
 
   List<Train> get trains {
-    return _trains;
+    return [..._trains];
   }
 
   String get fromStation {

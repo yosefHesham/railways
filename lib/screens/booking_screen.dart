@@ -7,6 +7,7 @@ import 'package:railways/model/journey.dart';
 import 'package:railways/model/stations.dart';
 import 'package:railways/model/ticket.dart';
 import 'package:railways/providers/auth_provider.dart';
+import 'package:railways/providers/journey_provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/assets.dart';
 import 'package:railways/public/colors.dart';
@@ -133,73 +134,29 @@ class _BookingScreenState extends State<BookingScreen> {
                   context: context, builder: (ctx) => CustomAlertDialog());
             } else if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
-              var collection =
-                  FirebaseFirestore.instance.collection('journeys');
-              var path =
-                  await collection.doc(trainProv.selectedTrain.number).get();
-              if (!path.exists) {
-                await firstTimeBook(trainProv, collection);
-              } else {
-                Map<String, dynamic> availableSeats = {};
-                trainProv.selectedTrain.fareClassess.entries.forEach((element) {
-                  availableSeats[element.key] = element.value.noOfSeats;
+              await Provider.of<JourneyProvider>(context, listen: false).book(
+                  train: trainProv.selectedTrain,
+                  from: trainProv.fromStation,
+                  to: trainProv.toStation,
+                  selectedClass: trainProv.selectedClass,
+                  bookDate: trainProv.bookDate);
+              final path = await FirebaseFirestore.instance
+                  .collection("analysis")
+                  .doc(trainProv.bookDate)
+                  .get();
+              if (path.exists) {
+                await FirebaseFirestore.instance
+                    .collection('analysis')
+                    .doc(trainProv.bookDate)
+                    .update({
+                  "passengers": FieldValue.increment(1),
+                  "profit": FieldValue.increment(1)
                 });
-                String degree = trainProv.selectedClass.keys.first.toString();
-                Journey journey = Journey.fromMap(path.data());
-                journey.profit += trainProv.selectedClass.entries.first.value;
-                journey.passengers++;
-
-                if ((journey.scheduels.first[trainProv.fromStation]
-                        as Map<String, dynamic>)
-                    .containsKey(trainProv.bookDate)) {
-                  for (int i = 0; i < journey.scheduels.length; i++) {
-                    String stationName =
-                        journey.scheduels[i].keys.first.toString();
-                    if (stationName == trainProv.fromStation) {
-                      for (int j = i; j < journey.scheduels.length; j++) {
-                        String toName =
-                            journey.scheduels[j].keys.first.toString();
-                        if (toName == trainProv.toStation) {
-                          break;
-                        } else {
-                          journey.scheduels[j][toName][trainProv.bookDate]
-                              [degree]--;
-                        }
-                      }
-                    } else {
-                      continue;
-                    }
-                  }
-                } else {
-                  for (int i = 0; i < journey.scheduels.length; i++) {
-                    (journey.scheduels[i][journey.scheduels[i].keys.first]
-                            as Map<String, dynamic>)
-                        .putIfAbsent(
-                            trainProv.bookDate, () => {...availableSeats});
-                  }
-
-                  for (int i = 0; i < journey.scheduels.length; i++) {
-                    String stationName =
-                        journey.scheduels[i].keys.first.toString();
-                    if (stationName == trainProv.fromStation) {
-                      for (int j = i; j < journey.scheduels.length; j++) {
-                        String toName =
-                            journey.scheduels[j].keys.first.toString();
-                        if (toName == trainProv.toStation) {
-                          break;
-                        } else {
-                          journey.scheduels[j][toName][trainProv.bookDate]
-                              [degree]--;
-                        }
-                      }
-                    } else {
-                      continue;
-                    }
-                  }
-                }
-                collection
-                    .doc(trainProv.selectedTrain.number)
-                    .set(journey.toMap());
+              } else {
+                await FirebaseFirestore.instance
+                    .collection('analysis')
+                    .doc(trainProv.bookDate)
+                    .set({"passengers": 1, "profit": 1});
               }
               Ticket ticket = Ticket(
                   date: trainProv.bookDate,
@@ -224,47 +181,6 @@ class _BookingScreenState extends State<BookingScreen> {
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           )),
     );
-  }
-
-  Future firstTimeBook(TrainsProvider trainProv,
-      CollectionReference<Map<String, dynamic>> collection) async {
-    Map<String, dynamic> availableSeats = {};
-    trainProv.selectedTrain.fareClassess.entries.forEach((element) {
-      availableSeats[element.key] = element.value.noOfSeats;
-    });
-    List<Map<String, Map<String, Map<String, dynamic>>>> scheduels = [];
-    trainProv.selectedTrain.stopStations.forEach((s) {
-      Map<String, dynamic> stations = {};
-      stations[s.name] = {
-        ...{
-          trainProv.bookDate: {...availableSeats}
-        }
-      };
-      scheduels.add(stations);
-    });
-
-    String degree = trainProv.selectedClass.keys.first.toString();
-    for (int i = 0; i < scheduels.length; i++) {
-      String stationName = scheduels[i].keys.first.toString();
-      if (stationName == trainProv.fromStation) {
-        for (int j = i; j < scheduels.length; j++) {
-          String toName = scheduels[j].keys.first.toString();
-          if (toName == trainProv.toStation) {
-            break;
-          } else {
-            scheduels[j][toName][trainProv.bookDate][degree]--;
-          }
-        }
-      } else {
-        continue;
-      }
-    }
-    Journey journey = Journey(
-        scheduels: scheduels,
-        passengers: 1,
-        profit: trainProv.selectedClass.entries.first.value);
-
-    await collection.doc(trainProv.selectedTrain.number).set(journey.toMap());
   }
 
   Widget buildTripInfo(TrainsProvider trainProv, BuildContext context,
