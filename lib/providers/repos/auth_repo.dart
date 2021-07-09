@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:railways/helpers/googleSign_exception.dart';
@@ -18,7 +19,8 @@ class AuthRepo {
 
       final AuthCredential credential = GoogleAuthProvider.credential(
           idToken: googleSignIn.idToken, accessToken: googleSignIn.accessToken);
-      await _auth.signInWithCredential(credential);
+      final user = await _auth.signInWithCredential(credential);
+      await _storeUserData(user.user);
     } catch (e) {
       print("Error : ${e.toString()}");
       throw GoogleException("Error While Loggin in");
@@ -41,10 +43,12 @@ class AuthRepo {
 
   Future<void> signUp(String email, String password, String name) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      final user = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
       await _auth.currentUser.updateDisplayName(name);
+
+      await _storeUserData(user.user);
     } catch (e) {
       var errorMsg = "Error While trying to sign up !";
       if (e.toString().contains("in use")) {
@@ -61,6 +65,14 @@ class AuthRepo {
     }
 
     await _auth.signOut();
+  }
+
+  Future<void> _storeUserData(User user) async {
+    await FirebaseFirestore.instance.collection('profiles').doc(user.uid).set({
+      "name": user.displayName,
+      "email": user.email,
+      "imgUrl": user.photoURL
+    });
   }
 
   Stream<User> authState() {

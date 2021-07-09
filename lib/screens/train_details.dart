@@ -1,0 +1,380 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:railways/model/train.dart';
+import 'package:railways/public/colors.dart';
+import 'package:railways/widgets/booking_details.dart';
+import 'package:railways/widgets/rating_value.dart';
+
+// ignore: must_be_immutable
+class TrainDetailScreen extends StatefulWidget {
+  Train train;
+  TrainDetailScreen(this.train);
+
+  @override
+  _TrainDetailScreenState createState() => _TrainDetailScreenState();
+}
+
+class _TrainDetailScreenState extends State<TrainDetailScreen> {
+  bool bookingOptionsVisble = false;
+  var _dropDownValue;
+  @override
+  Widget build(BuildContext context) {
+    print("${widget.train.fareClassess.keys.toList()}");
+    bool runAllDays = !widget.train.weekDayRuns.containsValue(false);
+    List<String> runningDays = [];
+    widget.train.weekDayRuns.entries.forEach((element) {
+      if (element.value) {
+        runningDays.add(element.key);
+      }
+    });
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70),
+          child: Container(
+            color: Theme.of(context).primaryColor,
+            child: ListTile(
+                leading: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Public.textFieldColor,
+                  ),
+                ),
+                title: Text(
+                  widget.train.number,
+                  style: TextStyle(
+                      color: Public.textFieldFillColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22),
+                ),
+                subtitle: Row(
+                  children: [
+                    Text(
+                      "Runs on: ",
+                      style: TextStyle(
+                          color: Public.textFieldColor,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      runAllDays
+                          ? "All Days"
+                          : runningDays
+                              .toString()
+                              .replaceAll("[", "")
+                              .replaceAll("]", ""),
+                      style: TextStyle(
+                          color: Public.textFieldColor,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                )),
+          ),
+        ),
+        backgroundColor: Colors.grey[200],
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Card(
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          child: Column(
+                            /// of the first two lines
+                            children: [
+                              stationRow(widget.train.stopStations[0].name,
+                                  widget.train.stopStations[0].departTime),
+                              Divider(
+                                color: Colors.grey,
+                              ),
+                              stationRow(widget.train.stopStations.last.name,
+                                  widget.train.stopStations.last.arrivalTime)
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey[200],
+                              width: 2,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          child: Card(
+                            elevation: 5,
+                            child: Container(
+                              width: 80,
+                              child: DropdownButton<String>(
+                                  hint: Text("Class"),
+                                  value: _dropDownValue,
+                                  onChanged: (v) {
+                                    setState(() {
+                                      _dropDownValue = v;
+                                    });
+                                  },
+                                  items: widget.train.fareClassess.keys
+                                      .map((e) => DropdownMenuItem(
+                                            child: Text(e),
+                                            value: e,
+                                          ))
+                                      .toList()),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              bookingOptionsVisble = !bookingOptionsVisble;
+                            });
+                            // Provider.of<TrainsProvider>(context, listen: false)
+                            //     .showBookingOptions(widget.train.number);
+                          },
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Text(
+                                'SEAT AVAILABILITY',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Public.textFieldFillColor,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            color: Color(0xff2043B0),
+                          ),
+                        ),
+                        Visibility(
+                            visible: bookingOptionsVisble,
+                            child: BookingDetails(widget.train.weekDayRuns)),
+                      ],
+                    ),
+                  ),
+
+                  /// of the first box
+                ),
+              ),
+
+              ///first container child
+              Card(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage(
+                              'assets/images/run_status_icon.png',
+                            ),
+                            fit: BoxFit.cover,
+                            height: 40,
+                            width: 40,
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'Running',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18,
+                              height: 1.2,
+                            ),
+                          ),
+                          Text(
+                            'Status',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18,
+                              height: 1.2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 100,
+                      child: VerticalDivider(
+                        width: 100,
+                        color: Colors.grey[400],
+                        thickness: 1.2,
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: Image(
+                            image: AssetImage(
+                              'assets/images/route_icon.png',
+                            ),
+                            color: Color(0xff2043B0),
+                            fit: BoxFit.cover,
+                            height: 40,
+                            width: 40,
+                          ),
+                        ),
+                        //SizedBox(height: 15,),
+                        Text(
+                          'Route',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 18,
+                            height: 1.2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              _buildReviewsAndRating(),
+
+              ///second container child
+              Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Tap to rate this train: ",
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 18,
+                          height: 1.2,
+                        ),
+                      ),
+                      RatingBar.builder(
+                        initialRating: 0,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 35,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star_border,
+                          color: Color(0xff2043B0),
+                        ),
+                        onRatingUpdate: (rating) {
+                          print(rating);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              ///for rating
+            ],
+          ),
+        ),
+
+        ///the parent column
+      ),
+    );
+  }
+
+  Row stationRow(String name, String time) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          child: Center(
+            child: FittedBox(
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: 18,
+                  height: 1.2,
+                ),
+              ),
+            ),
+          ),
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          width: 80,
+          height: 30,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(color: Colors.grey, spreadRadius: 1.5),
+              ]),
+        ),
+        Text(
+          time.substring(0, 5),
+          style: TextStyle(
+            fontSize: 18,
+            height: 1.2,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildReviewsAndRating() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Ratings",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 22)),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+                width: MediaQuery.of(context).size.width * .9,
+                child: Divider(
+                  color: Colors.black,
+                )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(children: [
+                  Text('4.2',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 30)),
+                  Text("out of 5",
+                      style: TextStyle(
+                          color: Public.textFieldColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15))
+                ]),
+                Column(children: [Text('Cleanliness'), Text('On time')]),
+                Column(
+                  children: [RatingValue(), Text(""), RatingValue()],
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

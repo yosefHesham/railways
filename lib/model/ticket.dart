@@ -8,14 +8,12 @@ class Ticket {
   num price;
 
   String name;
-  String userId;
 
   Ticket({
     @required this.trainNo,
     @required this.source,
     @required this.destination,
     @required this.price,
-    @required this.userId,
     @required this.name,
     @required this.date,
   });
@@ -26,7 +24,6 @@ class Ticket {
     this.destination = ticketMap['destination'];
     this.price = ticketMap['price'];
     this.name = ticketMap['name'];
-    this.userId = ticketMap['userId'];
     this.date = ticketMap['date'];
   }
 
@@ -37,7 +34,6 @@ class Ticket {
     ticketMap['destination'] = ticket.destination;
     ticketMap['price'] = ticket.price;
     ticketMap['name'] = ticket.name;
-    ticketMap['userId'] = ticket.userId;
     ticketMap['date'] = ticket.date;
     return ticketMap;
   }

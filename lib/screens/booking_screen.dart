@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/helpers/payment_fields_validator.dart';
-import 'package:railways/model/journey.dart';
-import 'package:railways/model/stations.dart';
 import 'package:railways/model/ticket.dart';
 import 'package:railways/providers/auth_provider.dart';
 import 'package:railways/providers/journey_provider.dart';
@@ -128,8 +127,8 @@ class _BookingScreenState extends State<BookingScreen> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           color: Theme.of(context).accentColor,
           onPressed: () async {
-            if (Provider.of<AuthProvider>(context, listen: false).user ==
-                null) {
+            User user = Provider.of<AuthProvider>(context, listen: false).user;
+            if (user == null) {
               showDialog(
                   context: context, builder: (ctx) => CustomAlertDialog());
             } else if (_formKey.currentState.validate()) {
@@ -140,36 +139,23 @@ class _BookingScreenState extends State<BookingScreen> {
                   to: trainProv.toStation,
                   selectedClass: trainProv.selectedClass,
                   bookDate: trainProv.bookDate);
-              final path = await FirebaseFirestore.instance
-                  .collection("analysis")
-                  .doc(trainProv.bookDate)
-                  .get();
-              if (path.exists) {
-                await FirebaseFirestore.instance
-                    .collection('analysis')
-                    .doc(trainProv.bookDate)
-                    .update({
-                  "passengers": FieldValue.increment(1),
-                  "profit": FieldValue.increment(1)
-                });
-              } else {
-                await FirebaseFirestore.instance
-                    .collection('analysis')
-                    .doc(trainProv.bookDate)
-                    .set({"passengers": 1, "profit": 1});
-              }
+              await updateAnalysisData(trainProv);
+              final userId = user.uid;
               Ticket ticket = Ticket(
-                  date: trainProv.bookDate,
-                  trainNo: trainProv.selectedTrain.number,
-                  source: trainProv.fromStation,
-                  destination: trainProv.toStation,
-                  price: trainProv.selectedClass.entries.first.value,
-                  name: name,
-                  userId: DateTime.now().toIso8601String());
+                date: trainProv.bookDate,
+                trainNo: trainProv.selectedTrain.number,
+                source: trainProv.fromStation,
+                destination: trainProv.toStation,
+                price: trainProv.selectedClass.entries.first.value,
+                name: name,
+              );
               final docId = FirebaseFirestore.instance
-                  .collection('Tickets')
+                  .collection('profiles')
+                  .doc(userId)
+                  .collection('reservations')
                   .doc()
                     ..set(ticket.toMap(ticket));
+
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => QrCode(ticket, docId.id)));
             }
@@ -181,6 +167,27 @@ class _BookingScreenState extends State<BookingScreen> {
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           )),
     );
+  }
+
+  Future updateAnalysisData(TrainsProvider trainProv) async {
+    final path = await FirebaseFirestore.instance
+        .collection("analysis")
+        .doc(trainProv.bookDate)
+        .get();
+    if (path.exists) {
+      await FirebaseFirestore.instance
+          .collection('analysis')
+          .doc(trainProv.bookDate)
+          .update({
+        "passengers": FieldValue.increment(1),
+        "profit": FieldValue.increment(1)
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection('analysis')
+          .doc(trainProv.bookDate)
+          .set({"passengers": 1, "profit": 1});
+    }
   }
 
   Widget buildTripInfo(TrainsProvider trainProv, BuildContext context,

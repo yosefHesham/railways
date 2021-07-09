@@ -10,6 +10,7 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:railways/model/ticket.dart';
 import 'package:railways/public/colors.dart';
+import 'package:railways/screens/home_screen.dart';
 import 'package:railways/widgets/distance_line.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -107,6 +108,11 @@ class _QrCodeState extends State<QrCode> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Ticket saved to downloads"),
       ));
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (Route<dynamic> route) => false,
+      );
     } else
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('error'),

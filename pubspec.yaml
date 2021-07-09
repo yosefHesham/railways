@@ -32,7 +32,7 @@ dependencies:
   flutter_typeahead: ^3.1.3
   font_awesome_flutter: ^9.1.0
   google_sign_in: ^5.0.4
-  image_gallery_saver: ^1.6.9
+  flutter_rating_bar: ^4.0.0
   intl: ^0.17.0
   page_transition: ^2.0.2
   pdf: ^3.4.2
@@ -60,6 +60,8 @@ flutter:
     - assets/images/search_appbar.png
     - assets/images/vodafone.png
     - assets/images/google.png
+    - assets/images/run_status_icon.png
+    - assets/images/route_icon.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

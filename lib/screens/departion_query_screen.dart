@@ -18,6 +18,7 @@ class StationQuery extends StatefulWidget {
 
 class _StationQueryState extends State<StationQuery> {
   var controller = TextEditingController();
+  bool selected = false;
   var fieldNode = FocusNode();
   @override
   Widget build(BuildContext context) {
@@ -47,6 +48,7 @@ class _StationQueryState extends State<StationQuery> {
                 onSuggestionSelected: (value) {
                   setState(() {
                     controller.text = value;
+                    selected = true;
                     FocusScope.of(context).requestFocus(fieldNode);
                   });
                 },
@@ -60,6 +62,12 @@ class _StationQueryState extends State<StationQuery> {
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: controller,
                   onSubmitted: (v) {
+                    if (!selected) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Please choose a station !"),
+                      ));
+                      return;
+                    }
                     widget.saveStation(v);
                     Navigator.of(context).pop();
                   },

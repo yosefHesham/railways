@@ -167,6 +167,12 @@ class _SearchWidgetState extends State<SearchWidget>
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           color: Theme.of(context).accentColor,
           onPressed: () {
+            if (destinationController.text == departionController.text) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Please choose different stations"),
+              ));
+              return;
+            }
             performSearch(context);
           },
           child: Text(
