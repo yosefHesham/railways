@@ -28,11 +28,7 @@ class _DegreeBoxState extends State<DegreeBox> {
               .showBookingOptions(widget.trainNum);
           Provider.of<TrainsProvider>(context, listen: false)
               .selectClass({widget.degree: widget.price});
-          final selectedClass =
-              Provider.of<TrainsProvider>(context, listen: false)
-                  .selectedClass
-                  .keys
-                  .first;
+
           setState(() {
             selected = true;
           });

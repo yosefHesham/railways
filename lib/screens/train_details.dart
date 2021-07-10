@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:progress_indicators/progress_indicators.dart';
+import 'package:provider/provider.dart';
+import 'package:railways/model/journey.dart';
 import 'package:railways/model/train.dart';
+import 'package:railways/providers/journey_provider.dart';
+import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/colors.dart';
+import 'package:railways/screens/review_screen.dart';
 import 'package:railways/widgets/booking_details.dart';
 import 'package:railways/widgets/rating_value.dart';
 
@@ -16,7 +22,7 @@ class TrainDetailScreen extends StatefulWidget {
 
 class _TrainDetailScreenState extends State<TrainDetailScreen> {
   bool bookingOptionsVisble = false;
-  var _dropDownValue;
+  String _dropDownValue = "1A";
   @override
   Widget build(BuildContext context) {
     print("${widget.train.fareClassess.keys.toList()}");
@@ -27,6 +33,11 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
         runningDays.add(element.key);
       }
     });
+    final from = Provider.of<TrainsProvider>(context, listen: false)
+        .fromStationOfSelectedTrain;
+    final to = Provider.of<TrainsProvider>(context, listen: false)
+        .toStationOfSelectedTrain;
+
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -88,13 +99,11 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                           child: Column(
                             /// of the first two lines
                             children: [
-                              stationRow(widget.train.stopStations[0].name,
-                                  widget.train.stopStations[0].departTime),
+                              stationRow(from.name, from.departTime),
                               Divider(
                                 color: Colors.grey,
                               ),
-                              stationRow(widget.train.stopStations.last.name,
-                                  widget.train.stopStations.last.arrivalTime)
+                              stationRow(to.name, to.arrivalTime)
                             ],
                           ),
                           decoration: BoxDecoration(
@@ -120,6 +129,9 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                                     setState(() {
                                       _dropDownValue = v;
                                     });
+                                    Provider.of<TrainsProvider>(context,
+                                            listen: false)
+                                        .selectClass({_dropDownValue: 100});
                                   },
                                   items: widget.train.fareClassess.keys
                                       .map((e) => DropdownMenuItem(
@@ -156,7 +168,19 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                         ),
                         Visibility(
                             visible: bookingOptionsVisble,
-                            child: BookingDetails(widget.train.weekDayRuns)),
+                            child: FutureBuilder<Journey>(
+                                future: Provider.of<JourneyProvider>(context,
+                                        listen: false)
+                                    .fetchJourney(widget.train.number),
+                                builder: (ctx, snapshot) => snapshot
+                                            .connectionState ==
+                                        ConnectionState.waiting
+                                    ? JumpingDotsProgressIndicator(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 25,
+                                      )
+                                    : BookingDetails(widget.train.weekDayRuns,
+                                        degree: _dropDownValue))),
                       ],
                     ),
                   ),
@@ -266,16 +290,18 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                         initialRating: 0,
                         minRating: 1,
                         direction: Axis.horizontal,
-                        allowHalfRating: true,
+                        allowHalfRating: false,
                         itemCount: 5,
                         itemSize: 35,
                         itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, _) => Icon(
-                          Icons.star_border,
+                          Icons.star_rate,
                           color: Color(0xff2043B0),
                         ),
                         onRatingUpdate: (rating) {
                           print(rating);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => ReviewScreen(rating)));
                         },
                       ),
                     ],

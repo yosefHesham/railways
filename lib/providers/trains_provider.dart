@@ -62,13 +62,18 @@ class TrainsProvider with ChangeNotifier {
     _trains = await _trainRepo.getTrains();
   }
 
+  void selectTrain(String trainNum) {
+    _selectedTrain =
+        _trains.firstWhere((element) => element.number == trainNum);
+    notifyListeners();
+  }
+
   void showBookingOptions(String trainNum) {
     _selectedTrain =
         _trains.firstWhere((element) => element.number == trainNum);
     if (_selectedTrain.number == trainNum) {
       _isBookingVisible = true;
     }
-    notifyListeners();
   }
 
   void selectBookingDate(String date) {

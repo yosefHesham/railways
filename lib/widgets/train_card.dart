@@ -74,8 +74,12 @@ class TrainCard extends StatelessWidget {
 
   Widget trainNumber(String number, BuildContext context) {
     return InkWell(
-        onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (ctx) => TrainDetailScreen(train))),
+        onTap: () {
+          Provider.of<TrainsProvider>(context, listen: false)
+              .selectTrain(number);
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (ctx) => TrainDetailScreen(train)));
+        },
         child: Row(children: [
           Text(
             number,

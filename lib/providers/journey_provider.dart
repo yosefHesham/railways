@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:railways/model/journey.dart';
 import 'package:railways/model/train.dart';
 import 'package:railways/providers/repos/journey_repo.dart';
 
@@ -20,5 +21,9 @@ class JourneyProvider with ChangeNotifier {
     } catch (e) {
       print("errro on booking :$e");
     }
+  }
+
+  Future<Journey> fetchJourney(String trainNum) async {
+    return await _baseJourneyRepo.fetchJourney(trainNum);
   }
 }

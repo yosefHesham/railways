@@ -16,9 +16,10 @@ class SearchResultScreen extends StatelessWidget {
                       TrainCard(trainProv.trains[i]),
                       trainProv.selectedTrain == trainProv.trains[i]
                           ? Visibility(
-                              child: BookingDetails(
-                                  trainProv.trains[i].weekDayRuns),
                               visible: trainProv.isBookingVisible,
+                              child: BookingDetails(
+                                trainProv.trains[i].weekDayRuns,
+                              ),
                             )
                           : Container()
                     ]))));

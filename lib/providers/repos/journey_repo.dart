@@ -20,6 +20,7 @@ abstract class BaseJourneyRepo {
       @required to,
       @required bookDate,
       @required Map<String, dynamic> selectedClass});
+  // ignore: unused_element
   Journey _bookOnExistingJourney(
       {@required Train selectedTrain,
       @required String from,
@@ -29,6 +30,8 @@ abstract class BaseJourneyRepo {
       @required Journey journey,
       // ignore: unused_element
       @required String selectedClass});
+
+  Future<Journey> fetchJourney(String trainNum);
 }
 
 class JourneyRepo implements BaseJourneyRepo {
@@ -177,5 +180,15 @@ class JourneyRepo implements BaseJourneyRepo {
     Journey journey =
         Journey(scheduels: scheduels, passengers: 1, profit: classPrice);
     return journey;
+  }
+
+  @override
+  Future<Journey> fetchJourney(String trainNum) async {
+    final journeyMap = await FirebaseFirestore.instance
+        .collection("journeys")
+        .doc(trainNum)
+        .get();
+
+    return Journey.fromMap(journeyMap.data());
   }
 }
