@@ -13,9 +13,15 @@ class RatingValue extends StatelessWidget {
           Container(color: Colors.grey[200]),
           FractionallySizedBox(
             alignment: Alignment.centerLeft,
-            widthFactor: .2,
+            widthFactor: .5,
+            heightFactor: .4,
             child: Container(
+              alignment: Alignment.centerRight,
               color: Theme.of(context).primaryColor,
+              child: Icon( 
+                Icons.ac_unit,
+                size: 15,
+              ),
             ),
           ),
         ],

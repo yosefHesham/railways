@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 import 'package:provider/provider.dart';
-import 'package:railways/model/journey.dart';
 import 'package:railways/model/train.dart';
-import 'package:railways/providers/journey_provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/colors.dart';
 import 'package:railways/screens/review_screen.dart';
+import 'package:railways/screens/running_status_screen.dart';
 import 'package:railways/widgets/booking_details.dart';
 import 'package:railways/widgets/rating_value.dart';
 
@@ -166,21 +164,10 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                             color: Color(0xff2043B0),
                           ),
                         ),
-                        Visibility(
-                            visible: bookingOptionsVisble,
-                            child: FutureBuilder<Journey>(
-                                future: Provider.of<JourneyProvider>(context,
-                                        listen: false)
-                                    .fetchJourney(widget.train.number),
-                                builder: (ctx, snapshot) => snapshot
-                                            .connectionState ==
-                                        ConnectionState.waiting
-                                    ? JumpingDotsProgressIndicator(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 25,
-                                      )
-                                    : BookingDetails(widget.train.weekDayRuns,
-                                        degree: _dropDownValue))),
+                        bookingOptionsVisble
+                            ? BookingDetails(widget.train.weekDayRuns,
+                                degree: _dropDownValue)
+                            : Container(),
                       ],
                     ),
                   ),
@@ -194,39 +181,43 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image(
-                            image: AssetImage(
-                              'assets/images/run_status_icon.png',
+                    InkWell(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => RunningStatusScreen(widget.train))),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image(
+                              image: AssetImage(
+                                'assets/images/run_status_icon.png',
+                              ),
+                              fit: BoxFit.cover,
+                              height: 40,
+                              width: 40,
                             ),
-                            fit: BoxFit.cover,
-                            height: 40,
-                            width: 40,
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            'Running',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 18,
-                              height: 1.2,
+                            SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          Text(
-                            'Status',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 18,
-                              height: 1.2,
+                            Text(
+                              'Running',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18,
+                                height: 1.2,
+                              ),
                             ),
-                          ),
-                        ],
+                            Text(
+                              'Status',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 18,
+                                height: 1.2,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Container(

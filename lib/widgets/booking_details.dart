@@ -57,19 +57,22 @@ class _BookingDetailsState extends State<BookingDetails> {
   }
 
   Widget buildBookingRow(String date, Journey journey) {
-    var from = Provider.of<TrainsProvider>(context, listen: false)
-        .fromStationOfSelectedTrain;
-    var seats = journey.scheduels
-        .firstWhere((element) => element.containsKey(from.name));
-    var selectedClass = Provider.of<TrainsProvider>(context, listen: false)
-            .selectedClass
-            ?.keys
-            ?.first ??
-        widget.degree;
+    int availSeats = 100;
+    if (journey != null) {
+      var from = Provider.of<TrainsProvider>(context, listen: false)
+          .fromStationOfSelectedTrain;
+      var seats = journey?.scheduels
+          ?.firstWhere((element) => element.containsKey(from.name));
+      var selectedClass = Provider.of<TrainsProvider>(context, listen: false)
+              .selectedClass
+              ?.keys
+              ?.first ??
+          widget.degree;
 
-    int availSeats = seats[from.name][date] == null
-        ? 100
-        : seats[from.name][date][selectedClass];
+      availSeats = seats[from.name][date] == null
+          ? 100
+          : seats[from.name][date][selectedClass];
+    }
     return Column(children: [
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Padding(

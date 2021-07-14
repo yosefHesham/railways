@@ -59,7 +59,9 @@ class JourneyRepo implements BaseJourneyRepo {
             selectedTrain: train,
             selectedClass: degree,
             bookDate: bookDate);
-        await collection.doc(train.number).set(journey.toMap());
+        transaction.set(docRef, journey.toMap());
+
+        return;
       }
 
       /// if booked the train before
@@ -184,11 +186,13 @@ class JourneyRepo implements BaseJourneyRepo {
 
   @override
   Future<Journey> fetchJourney(String trainNum) async {
+    print("trainNum $trainNum");
+    print("fetching journey");
     final journeyMap = await FirebaseFirestore.instance
         .collection("journeys")
         .doc(trainNum)
         .get();
 
-    return Journey.fromMap(journeyMap.data());
+    return Journey.fromMap(journeyMap?.data());
   }
 }
