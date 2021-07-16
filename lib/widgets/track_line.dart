@@ -4,20 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:railways/model/stations.dart';
 import 'package:railways/public/colors.dart';
-import 'package:railways/widgets/timeline_rightChild.dart';
 
 // ignore: must_be_immutable
 class TrackLine extends StatefulWidget {
   StopStations firstStaion;
   StopStations secondStaion;
-  bool notDeparted;
-  bool isArrived;
   double radius;
   TrackLine({
     @required this.firstStaion,
     @required this.secondStaion,
-    @required this.isArrived,
-    @required this.notDeparted,
     this.radius,
   });
 
@@ -30,21 +25,7 @@ class _TrackLineState extends State<TrackLine> {
   var fractionTime = 0.0;
   @override
   initState() {
-    print("init state trackline ${widget.isArrived}");
     super.initState();
-    // if (widget.isArrived) {
-    //   setState(() {
-    //     print("not departed");
-    //     fractionTime = 1;
-    //   });
-    //   return;
-    // } else if (widget.notDeparted) {
-    //   setState(() {
-    //     fractionTime = 0;
-    //   });
-    //   return;
-    // }
-
     estimateTime();
   }
 

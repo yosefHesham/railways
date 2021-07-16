@@ -6,6 +6,7 @@ import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/colors.dart';
 import 'package:railways/screens/review_screen.dart';
 import 'package:railways/screens/running_status_screen.dart';
+import 'package:railways/screens/train_route.dart';
 import 'package:railways/widgets/booking_details.dart';
 import 'package:railways/widgets/rating_value.dart';
 
@@ -228,31 +229,35 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                         thickness: 1.2,
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Image(
-                            image: AssetImage(
-                              'assets/images/route_icon.png',
+                    InkWell(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (ctx) => TrainRoute(widget.train))),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            child: Image(
+                              image: AssetImage(
+                                'assets/images/route_icon.png',
+                              ),
+                              color: Color(0xff2043B0),
+                              fit: BoxFit.cover,
+                              height: 40,
+                              width: 40,
                             ),
-                            color: Color(0xff2043B0),
-                            fit: BoxFit.cover,
-                            height: 40,
-                            width: 40,
                           ),
-                        ),
-                        //SizedBox(height: 15,),
-                        Text(
-                          'Route',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18,
-                            height: 1.2,
+                          //SizedBox(height: 15,),
+                          Text(
+                            'Route',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 18,
+                              height: 1.2,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -383,9 +388,26 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 15))
                 ]),
-                Column(children: [Text('Cleanliness'), Text('On time')]),
+                Column(children: [
+                  Text(
+                    'Cleanliness',
+                    style: TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                  Text(
+                    'Discipline',
+                    style: TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                  Text(
+                    "Comfort",
+                    style: TextStyle(fontWeight: FontWeight.w400),
+                  )
+                ]),
                 Column(
-                  children: [RatingValue(), Text(""), RatingValue()],
+                  children: [1, 2, 3]
+                      .map((e) => Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: RatingValue()))
+                      .toList(),
                 ),
               ],
             )

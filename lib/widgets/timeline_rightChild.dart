@@ -13,7 +13,7 @@ class TimeLineRChild extends StatelessWidget {
         Provider.of<TrainsProvider>(context, listen: false).fromStation;
     final dest = Provider.of<TrainsProvider>(context, listen: false).toStation;
     return Card(
-      margin: const EdgeInsets.only(bottom: 30, left: 50),
+      margin: const EdgeInsets.only(bottom: 40, left: 50),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,

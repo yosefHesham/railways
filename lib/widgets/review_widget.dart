@@ -25,7 +25,7 @@ class ReviewWidget extends StatelessWidget {
             itemSize: 35,
             itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (context, _) => Icon(
-              Icons.star_outline,
+              Icons.star,
               color: Color(0xff2043B0),
             ),
             onRatingUpdate: (rating) {

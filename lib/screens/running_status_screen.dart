@@ -80,8 +80,6 @@ class _RunningStatusScreenState extends State<RunningStatusScreen> {
               itemBuilder: (ctx, i) =>
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     TrackLine(
-                      isArrived: isArrived,
-                      notDeparted: notDeparted,
                       radius:
                           i == widget.train.stopStations.length - 1 ? 5 : 0.0,
                       firstStaion: i == widget.train.stopStations.length - 1
@@ -92,26 +90,7 @@ class _RunningStatusScreenState extends State<RunningStatusScreen> {
                           : widget.train.stopStations[i + 1],
                     ),
                     TimeLineRChild(widget.train.stopStations[i])
-                  ]))
-          // child: Column(
-          //   children: widget.train.stopStations
-          //       .map((e) => TimelineTile(
-          //             indicatorStyle: IndicatorStyle(
-          //                 indicator: notDeparted
-          //                     ? FaIcon(FontAwesomeIcons.train)
-          //                     : checkIfArrived(e, fromStation)
-          //                         ? FaIcon(FontAwesomeIcons.train)
-          //                         : Icon(
-          //                             Icons.brightness_1,
-          //                             color: Colors.black,
-          //                             size: 8,
-          //                           )),
-          //             isFirst: e.name == fromStation,
-          //             endChild: TimeLineRChild(e),
-          //           ))
-          //       .toList(),
-          // ),
-          ),
+                  ]))),
     ));
   }
 }
