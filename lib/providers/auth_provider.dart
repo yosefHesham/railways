@@ -5,6 +5,10 @@ import 'package:railways/providers/repos/auth_repo.dart';
 class AuthProvider with ChangeNotifier {
   AuthRepo _authRepo = AuthRepo();
 
+  User get user {
+    return FirebaseAuth.instance.currentUser;
+  }
+
   Future<void> googleSignIn() async {
     await _authRepo.googleSign();
   }
@@ -15,10 +19,22 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> signOut() async {
     await _authRepo.signOut();
+    notifyListeners();
   }
 
-  User get user {
-    return FirebaseAuth.instance.currentUser;
+  Future<void> deleteAccount() async {
+    await _authRepo.deleteAccount();
+    notifyListeners();
+  }
+
+  Future<void> updateName(String name) async {
+    await _authRepo.updateName(name);
+    notifyListeners();
+  }
+
+  Future<void> updateMail(String mail) async {
+    await _authRepo.updateMail(mail);
+    notifyListeners();
   }
 
   Stream<User> get authState {

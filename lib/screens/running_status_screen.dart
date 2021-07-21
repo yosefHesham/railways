@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:railways/model/stations.dart';
 import 'package:railways/model/train.dart';
 import 'package:railways/public/colors.dart';
 import 'package:railways/widgets/timeline_rightChild.dart';
@@ -20,10 +19,12 @@ class _RunningStatusScreenState extends State<RunningStatusScreen> {
   initState() {
     super.initState();
     Future.delayed(Duration.zero).then((_) {
+      print(DateTime.now().toString());
       String departTime = widget.train.stopStations.first.departTime;
       String arrivalTime = widget.train.stopStations.last.arrivalTime;
-      if (DateTime.now().hour <= int.parse(departTime.substring(0, 2)) &&
-          DateTime.now().minute < int.parse(departTime.substring(3, 5))) {
+      if (DateTime.now().hour < int.parse(departTime.substring(0, 2)) ||
+          (DateTime.now().hour == int.parse(departTime.substring(0, 2)) &&
+              DateTime.now().minute < int.parse(departTime.substring(3, 5)))) {
         setState(() {
           notDeparted = true;
         });

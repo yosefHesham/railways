@@ -88,7 +88,7 @@ class TrainRoute extends StatelessWidget {
                   )),
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * .025,
+                height: MediaQuery.of(context).size.height * .04,
                 child: Material(
                   elevation: 10,
                   child: Row(

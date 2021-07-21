@@ -63,6 +63,7 @@ flutter:
     - assets/images/google.png
     - assets/images/run_status_icon.png
     - assets/images/route_icon.png
+    - assets/images/profileBar.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -42,11 +42,8 @@ class _TrackLineState extends State<TrackLine> {
       var departTime = (int.parse(departTimeString.substring(0, 2)) * 60) +
           int.parse(departTimeString.substring(3, 5));
       var totalDuration = arrivalTime - departTime;
-      print("nowTime ${TimeOfDay.now().hour} + ${TimeOfDay.now().minute}");
       var nowTime = (DateTime.now().hour * 60) + DateTime.now().minute;
       var elapsedTime = nowTime - departTime;
-      print("totalDuration $totalDuration");
-      print("elapsedTime ${elapsedTime}");
       if (elapsedTime >= 0) {
         setState(() {
           fractionTime = elapsedTime / totalDuration;
@@ -78,7 +75,10 @@ class _TrackLineState extends State<TrackLine> {
                       : fractionTime,
               child: Container(
                 alignment: Alignment.bottomCenter,
-                color: Color(0xff2043B0),
+                decoration: BoxDecoration(
+                    color: Public.accent,
+                    borderRadius: BorderRadius.circular(
+                        fractionTime > 0 && fractionTime < 1 ? 5 : 0)),
               )),
           Container(
             width: 10,

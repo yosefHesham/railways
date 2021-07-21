@@ -13,6 +13,7 @@ import 'package:railways/public/colors.dart';
 import 'package:railways/screens/qrcode_screen.dart';
 import 'package:railways/widgets/custom_dialog.dart';
 import 'package:railways/widgets/custom_text_field.dart';
+import 'package:railways/helpers/day_extractor.dart';
 
 // ignore: must_be_immutable
 class BookingScreen extends StatefulWidget {
@@ -170,14 +171,16 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Future updateAnalysisData(TrainsProvider trainProv) async {
+    String dateFormatted = trainProv.bookDate.analysisFormat();
+
     final path = await FirebaseFirestore.instance
         .collection("analysis")
-        .doc(trainProv.bookDate)
+        .doc(dateFormatted)
         .get();
     if (path.exists) {
       await FirebaseFirestore.instance
           .collection('analysis')
-          .doc(trainProv.bookDate)
+          .doc(dateFormatted)
           .update({
         "passengers": FieldValue.increment(1),
         "profit": FieldValue.increment(1)
@@ -185,7 +188,7 @@ class _BookingScreenState extends State<BookingScreen> {
     } else {
       await FirebaseFirestore.instance
           .collection('analysis')
-          .doc(trainProv.bookDate)
+          .doc(dateFormatted)
           .set({"passengers": 1, "profit": 1});
     }
   }

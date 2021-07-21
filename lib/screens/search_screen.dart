@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:railways/public/assets.dart';
 import 'package:railways/widgets/search_widget.dart';
 import 'package:railways/widgets/train_appbar.dart';
 
@@ -16,7 +17,11 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Colors.grey.shade100,
         body: CustomScrollView(
           slivers: [
-            TrainAppBar(),
+            TrainAppBar(
+              title: "Where to ?",
+              radius: 35,
+              image: appBarImg,
+            ),
             SliverList(
               delegate: SliverChildListDelegate([SearchWidget()]),
             )

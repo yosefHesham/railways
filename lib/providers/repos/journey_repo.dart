@@ -66,12 +66,12 @@ class JourneyRepo implements BaseJourneyRepo {
 
       /// if booked the train before
       else {
-        print("path is exist");
         Journey journey = Journey.fromMap(path.data());
         print(journey.toString());
         journey = _bookOnExistingJourney(
             selectedTrain: train,
             from: from,
+            to: to,
             bookDate: bookDate,
             classPrice: degreePrice,
             journey: journey,
@@ -97,7 +97,7 @@ class JourneyRepo implements BaseJourneyRepo {
     journey.profit += classPrice;
     journey.passengers++;
 
-    print("bookDate:$bookDate");
+    print("from $from, to: $to");
     if ((journey.scheduels.first[from] as Map<String, dynamic>)
         .containsKey(bookDate)) {
       for (int i = 0; i < journey.scheduels.length; i++) {

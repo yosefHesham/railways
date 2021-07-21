@@ -41,6 +41,19 @@ class AuthRepo {
   //   return authState;
   // }
 
+  Future<void> deleteAccount() async {
+    await _auth.signOut();
+    _auth.currentUser.delete();
+  }
+
+  Future<void> updateName(String name) async {
+    await _auth.currentUser.updateDisplayName(name);
+  }
+
+  Future<void> updateMail(String mail) async {
+    await _auth.currentUser.updateEmail(mail);
+  }
+
   Future<void> signUp(String email, String password, String name) async {
     try {
       final user = await _auth.createUserWithEmailAndPassword(

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:railways/providers/auth_provider.dart';
 import 'package:railways/providers/journey_provider.dart';
 import 'package:railways/providers/trains_provider.dart';
+import 'package:railways/screens/basic_info_screen.dart';
 import 'package:railways/screens/booking_screen.dart';
 import 'package:railways/screens/home_screen.dart';
 import 'package:railways/screens/profile.dart';
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
             HomeScreen.routeName: (ctx) => HomeScreen(),
             SignUpEmailScreen.routeName: (ctx) => SignUpEmailScreen(),
             SignInScreen.routeName: (ctx) => SignInScreen(),
-            ProfileScreen.routeName: (ctx) => ProfileScreen()
+            ProfileScreen.routeName: (ctx) => ProfileScreen(),
+            BasicInfoScreen.routeName: (ctx) => BasicInfoScreen()
           },
         ));
   }

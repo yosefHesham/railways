@@ -14,6 +14,7 @@ class TrainsProvider with ChangeNotifier {
   bool _isBookingVisible = false;
   Train _selectedTrain;
   Map<String, dynamic> _selectedClass;
+  List<Train> _filteredTrains = [];
 
   bool get isBookingVisible {
     return _isBookingVisible;
@@ -43,7 +44,7 @@ class TrainsProvider with ChangeNotifier {
   }
 
   List<Train> get trains {
-    return [..._trains];
+    return [..._filteredTrains];
   }
 
   String get fromStation {
@@ -87,11 +88,12 @@ class TrainsProvider with ChangeNotifier {
   }
 
   void fromTo(String from, String to, String date) {
+    print("fromTrain: $from toTrain :$to");
     _fromStation = from;
     _toStation = to;
     _date = date;
 
-    _trains = _trains.where((train) {
+    _filteredTrains = _trains.where((train) {
       StopStations fromStation;
       StopStations toStation;
 

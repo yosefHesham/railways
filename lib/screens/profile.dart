@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/providers/auth_provider.dart';
 import 'package:railways/screens/sign_up.dart';
+import 'package:railways/widgets/profile_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const routeName = '/profile';
@@ -14,18 +15,13 @@ class ProfileScreen extends StatelessWidget {
         stream: Provider.of<AuthProvider>(context, listen: false).authState,
         builder: (context, snapShot) {
           print("data ${snapShot.data} ");
-          return snapShot.data == null
-              ? SignUpScreen()
-              : Scaffold(
-                  body: Center(
-                  child: TextButton(
-                    child: Text('Sign Out'),
-                    onPressed: () async {
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .signOut();
-                    },
-                  ),
-                ));
+          return snapShot.connectionState == ConnectionState.waiting
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : snapShot.data == null
+                  ? SignUpScreen()
+                  : ProfileWidget();
         });
   }
 }

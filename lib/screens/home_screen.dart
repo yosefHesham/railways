@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:railways/public/colors.dart';
 import 'package:railways/screens/profile.dart';
 import 'package:railways/screens/search_screen.dart';
 
@@ -25,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        selectedItemColor: Public.accent,
         onTap: (v) => changePage(v),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),

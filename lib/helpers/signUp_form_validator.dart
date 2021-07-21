@@ -1,5 +1,5 @@
 class SignUpFormValidator {
-  static validateMail(v) {
+  static String validateMail(v) {
     if (v.isEmpty || v.trim().isEmpty) {
       return "Mail Cannot Be Empty !";
     }
@@ -9,7 +9,7 @@ class SignUpFormValidator {
     return null;
   }
 
-  static validateName(v) {
+  static String validateName(v) {
     if (v.isEmpty || v.trim().isEmpty) {
       return "User name Cannot be empty !";
     }
@@ -19,7 +19,7 @@ class SignUpFormValidator {
     return null;
   }
 
-  static validatePassword(v) {
+  static String validatePassword(v) {
     if (v.isEmpty || v.trim().isEmpty) {
       return "Password Cannot Be Empty !";
     }

@@ -3,13 +3,22 @@ import 'package:provider/provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/colors.dart';
 
+// ignore: must_be_immutable
 class DegreeBox extends StatefulWidget {
   final String degree;
   final num price;
   final String trainNum;
+  Color borderColor;
+  int index;
+  final Function changeIndex;
 
   DegreeBox(
-      {@required this.degree, @required this.price, @required this.trainNum});
+      {@required this.degree,
+      @required this.price,
+      @required this.trainNum,
+      this.borderColor,
+      this.changeIndex,
+      this.index});
 
   @override
   _DegreeBoxState createState() => _DegreeBoxState();
@@ -28,29 +37,26 @@ class _DegreeBoxState extends State<DegreeBox> {
               .showBookingOptions(widget.trainNum);
           Provider.of<TrainsProvider>(context, listen: false)
               .selectClass({widget.degree: widget.price});
-
-          setState(() {
-            selected = true;
-          });
-          Future.delayed(Duration(seconds: 5)).then((_) => {
-                setState(() {
-                  selected = false;
-                })
-              });
+          widget.changeIndex(widget.index);
         },
         child: Container(
-          width: 60,
+          width: MediaQuery.of(context).size.width * .2,
           height: 50,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
-              border: Border.all(
-                  color: selected
-                      ? Public.textFieldFillColor
-                      : Colors.green.shade400),
+              border: Border.all(color: widget.borderColor),
               color: Colors.green.shade200.withOpacity(.2)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [Text(widget.degree), Text('\$${widget.price}')],
+            children: [
+              Text(widget.degree),
+              Text('${widget.price}'),
+              Text(
+                "EGP",
+                style: TextStyle(
+                    color: Public.accent, fontWeight: FontWeight.w400),
+              )
+            ],
           ),
         ),
       ),
