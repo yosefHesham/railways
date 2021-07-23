@@ -158,7 +158,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     ..set(ticket.toMap(ticket));
 
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => QrCode(ticket, docId.id)));
+                  builder: (ctx) => QrCode(ticket, "$userId,${docId.id}")));
             }
           },
           child: Text(
@@ -363,6 +363,7 @@ class _BookingScreenState extends State<BookingScreen> {
             style: TextStyle(color: Public.hintTextFieldColor),
           ),
           CustomTextField(
+            controller: textController,
             onFieldSubmit: onSaved,
             icon: icon,
             hintText: hint,
@@ -417,12 +418,14 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Column creditCardTFF() {
+    var creditNumbController = TextEditingController();
     return Column(
       children: [
         textFieldWithLabel("Name on card",
             onSaved: _saveCardName,
             validateField: PaymentFieldValidator.validateName),
         textFieldWithLabel("Card number",
+            textController: creditNumbController,
             onSaved: _saveCardNumber,
             validateField: PaymentFieldValidator.validateCardNum),
         Row(

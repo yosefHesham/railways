@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:railways/helpers/filters.dart';
 import 'package:railways/model/stations.dart';
 import 'package:railways/model/train.dart';
 import 'package:railways/providers/repos/train_repo.dart';
 import 'package:railways/helpers/day_extractor.dart';
+import 'package:collection/collection.dart';
 
 class TrainsProvider with ChangeNotifier {
   BaseTrainRepo _trainRepo = TrainRepo();
@@ -14,7 +16,9 @@ class TrainsProvider with ChangeNotifier {
   bool _isBookingVisible = false;
   Train _selectedTrain;
   Map<String, dynamic> _selectedClass;
+  List<Train> _resultTrains = [];
   List<Train> _filteredTrains = [];
+  List<Train> _tempTrains = [];
 
   bool get isBookingVisible {
     return _isBookingVisible;
@@ -44,7 +48,7 @@ class TrainsProvider with ChangeNotifier {
   }
 
   List<Train> get trains {
-    return [..._filteredTrains];
+    return [..._resultTrains];
   }
 
   String get fromStation {
@@ -77,6 +81,76 @@ class TrainsProvider with ChangeNotifier {
     }
   }
 
+  void filterTrains() {
+    _resultTrains = [..._tempTrains];
+    List<bool> filterValues = departAt.values.toList();
+    Function eq = const ListEquality().equals;
+    List<int> earlyMorning = [00, 6];
+    List<int> morning = [6, 12];
+    List<int> afternoon = [12, 18];
+    List<int> night = [18, 00];
+
+    if (!departAt.containsValue(false)) {
+      _resultTrains = [..._tempTrains];
+    } else if (!departAt.containsValue(true)) {
+      _resultTrains = [..._tempTrains];
+      print(_filteredTrains.length);
+    } else if (eq(filterValues, [true, false, false, false])) {
+      _filter(earlyMorning[0], earlyMorning[1]);
+    } else if (eq(filterValues, [false, true, false, false])) {
+      _filter(morning[0], morning[1]);
+    } else if (eq(filterValues, [false, false, false, true])) {
+      _filter(night[0], night[1]);
+    } else if (eq(filterValues, [false, false, true, false])) {
+      _filter(afternoon[0], afternoon[1]);
+    } else if (eq(filterValues, [true, true, false, false])) {
+      _twoFilters(earlyMorning[0], earlyMorning[1], morning[0], morning[1]);
+    } else if (eq(filterValues, [true, false, true, false])) {
+      _twoFilters(earlyMorning[0], earlyMorning[1], afternoon[0], afternoon[1]);
+    } else if (eq(filterValues, [true, false, false, true])) {
+      _twoFilters(earlyMorning[0], earlyMorning[1], night[0], night[1]);
+    } else if (eq(filterValues, [false, true, true, false])) {
+      _twoFilters(morning[0], morning[1], afternoon[0], afternoon[1]);
+    } else if (eq(filterValues, [false, true, false, true])) {
+      _twoFilters(morning[0], morning[1], night[0], night[1]);
+    } else if (eq(filterValues, [false, false, true, true])) {
+      _twoFilters(afternoon[0], afternoon[1], night[0], night[1]);
+    }
+
+    notifyListeners();
+  }
+
+  void _filter(int start, int end) {
+    _resultTrains = _resultTrains.where((train) {
+      StopStations from = train.stopStations
+          .firstWhere((element) => element.name == fromStation);
+      int departTime = int.parse(from.departTime.split(":")[0]);
+
+      print("Depart at :$departTime");
+      print("start $start");
+      if (departTime >= start && departTime <= end) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+  }
+
+  void _twoFilters(int start1, int end1, int start2, int end2) {
+    _resultTrains = _resultTrains.where((train) {
+      StopStations from = train.stopStations
+          .firstWhere((element) => element.name == fromStation);
+      int departTime = int.parse(from.departTime.split(":")[0]);
+
+      if (departTime >= start1 && departTime <= end1 ||
+          departTime >= start2 && departTime <= end2) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+  }
+
   void selectBookingDate(String date) {
     _bookDate = date;
     notifyListeners();
@@ -93,7 +167,7 @@ class TrainsProvider with ChangeNotifier {
     _toStation = to;
     _date = date;
 
-    _filteredTrains = _trains.where((train) {
+    _resultTrains = _trains.where((train) {
       StopStations fromStation;
       StopStations toStation;
 
@@ -115,6 +189,7 @@ class TrainsProvider with ChangeNotifier {
       }
       return false;
     }).toList();
+    _tempTrains = [..._resultTrains];
     notifyListeners();
   }
 }

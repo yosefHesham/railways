@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   cloud_firestore: ^2.1.0
+  credit_card_validator: ^2.0.0
   cupertino_icons: ^1.0.2
   downloads_path_provider: ^0.1.0
   firebase: ^9.0.1

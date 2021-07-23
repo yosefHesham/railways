@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:railways/public/colors.dart';
 
+// ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
-  const CustomTextField(
+  CustomTextField(
       {Key key,
       @required this.icon,
       @required this.hintText,
@@ -13,6 +15,8 @@ class CustomTextField extends StatelessWidget {
       this.focusNode,
       this.changeFocus,
       this.inputAction,
+      this.inputType,
+      this.inputFormatters,
       this.controller})
       : super(key: key);
 
@@ -25,6 +29,8 @@ class CustomTextField extends StatelessWidget {
   final FocusNode focusNode;
   final Function changeFocus;
   final TextInputAction inputAction;
+  TextInputType inputType = TextInputType.text;
+  List<TextInputFormatter> inputFormatters = [];
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +47,8 @@ class CustomTextField extends StatelessWidget {
           focusNode: focusNode,
           style: TextStyle(color: Public.hintTextFieldColor),
           controller: controller,
+          keyboardType: inputType,
+          inputFormatters: inputFormatters,
           validator: (v) => validateField(v),
           onSaved: (v) => onFieldSubmit(v),
           onFieldSubmitted: (_) => changeFocus(),

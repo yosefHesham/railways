@@ -22,11 +22,11 @@ class GoogleSignButton extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 40,
+              width: 20,
             ),
             Image.asset('assets/images/google.png'),
             SizedBox(
-              width: 40,
+              width: 20,
             ),
             Text(
               text,

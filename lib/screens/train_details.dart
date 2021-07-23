@@ -268,11 +268,12 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
               ///second container child
               Container(
                 color: Colors.white,
+                width: MediaQuery.of(context).size.width * .8,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         "Tap to rate this train: ",
@@ -288,8 +289,8 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                         direction: Axis.horizontal,
                         allowHalfRating: false,
                         itemCount: 5,
-                        itemSize: 35,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemSize: 30,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                         itemBuilder: (context, _) => Icon(
                           Icons.star_rate,
                           color: Color(0xff2043B0),

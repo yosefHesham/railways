@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/colors.dart';
 import 'package:railways/widgets/booking_details.dart';
+import 'package:railways/widgets/time_modalSheet.dart';
 import 'package:railways/widgets/train_card.dart';
 
 class SearchResultScreen extends StatelessWidget {
@@ -12,8 +13,25 @@ class SearchResultScreen extends StatelessWidget {
     final from =
         Provider.of<TrainsProvider>(context, listen: false).fromStation;
     final to = Provider.of<TrainsProvider>(context, listen: false).toStation;
+    var _scaffoldKey = GlobalKey<ScaffoldState>();
     return SafeArea(
       child: Scaffold(
+          key: _scaffoldKey,
+          bottomNavigationBar: BottomNavigationBar(
+            fixedColor: Colors.white,
+            unselectedItemColor: Colors.white,
+            onTap: (i) {
+              if (i == 0) {
+                _scaffoldKey.currentState
+                    .showBottomSheet((context) => TimeModalSheet());
+              }
+            },
+            backgroundColor: Theme.of(context).primaryColor,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.timer), label: "Time"),
+              BottomNavigationBarItem(icon: Icon(Icons.sort), label: "Sort By"),
+            ],
+          ),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(70),
             child: Container(

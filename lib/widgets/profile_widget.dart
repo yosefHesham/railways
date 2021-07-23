@@ -29,11 +29,6 @@ class ProfileWidget extends StatelessWidget {
                 title: "Passenger details",
               ),
               ProfileTile(
-                onPress: () => onProfileTilePress(context, "/bookings"),
-                icon: Icons.book,
-                title: "Previous Booking",
-              ),
-              ProfileTile(
                 onPress: () => onProfileTilePress(context, "/settings"),
                 icon: Icons.settings,
                 title: "Settings",
