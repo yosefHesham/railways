@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: JourneyProvider())
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
               fontFamily: "Walsheim",
               primaryColor: Color(0xff132968),

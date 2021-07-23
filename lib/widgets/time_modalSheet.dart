@@ -104,8 +104,8 @@ class _TimeModalSheetState extends State<TimeModalSheet> {
                       maxOptions = 2;
                       selectedValues.clear();
                     });
-                    Provider.of<TrainsProvider>(context, listen: false)
-                        .filterTrains();
+                    // Provider.of<TrainsProvider>(context, listen: false)
+                    //     .filterTrains();
                   },
                   child: Text(
                     "Reset",
@@ -115,6 +115,7 @@ class _TimeModalSheetState extends State<TimeModalSheet> {
                   onPressed: () {
                     Provider.of<TrainsProvider>(context, listen: false)
                         .filterTrains();
+                    Navigator.of(context).pop();
                   },
                   child: Text(
                     "Apply",

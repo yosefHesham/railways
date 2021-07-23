@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/colors.dart';
 import 'package:railways/widgets/booking_details.dart';
+import 'package:railways/widgets/sort_modalSheet.dart';
 import 'package:railways/widgets/time_modalSheet.dart';
 import 'package:railways/widgets/train_card.dart';
 
@@ -24,6 +25,9 @@ class SearchResultScreen extends StatelessWidget {
               if (i == 0) {
                 _scaffoldKey.currentState
                     .showBottomSheet((context) => TimeModalSheet());
+              } else {
+                _scaffoldKey.currentState
+                    .showBottomSheet((context) => SortModalSheet());
               }
             },
             backgroundColor: Theme.of(context).primaryColor,

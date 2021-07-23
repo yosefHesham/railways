@@ -81,6 +81,20 @@ class TrainsProvider with ChangeNotifier {
     }
   }
 
+  void sortTrains(String sortType) {
+    print("sortType $sortType");
+    if (sortType == "Departure") {
+      _resultTrains.sort((a, b) =>
+          int.parse(a.stopStations.first.departTime.split(":")[0]).compareTo(
+              int.parse(b.stopStations.first.departTime.split(":")[0])));
+    } else if (sortType == "Arrival") {
+      _resultTrains.sort((a, b) =>
+          int.parse(a.stopStations.last.arrivalTime.split(":")[0]).compareTo(
+              int.parse(b.stopStations.last.arrivalTime.split(":")[0])));
+    }
+    notifyListeners();
+  }
+
   void filterTrains() {
     _resultTrains = [..._tempTrains];
     List<bool> filterValues = departAt.values.toList();
