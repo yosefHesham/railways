@@ -4,6 +4,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/providers/auth_provider.dart';
 import 'package:railways/providers/journey_provider.dart';
+import 'package:railways/providers/tickets_provider.dart';
 import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/screens/basic_info_screen.dart';
 import 'package:railways/screens/booking_screen.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider.value(value: TrainsProvider()),
           ChangeNotifierProvider.value(value: AuthProvider()),
-          ChangeNotifierProvider.value(value: JourneyProvider())
+          ChangeNotifierProvider.value(value: JourneyProvider()),
+          ChangeNotifierProvider.value(value: TicketProvider())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

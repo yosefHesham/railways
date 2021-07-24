@@ -296,7 +296,6 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                           color: Color(0xff2043B0),
                         ),
                         onRatingUpdate: (rating) {
-                          print(rating);
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (ctx) => ReviewScreen(rating)));
                         },

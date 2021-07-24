@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:downloads_path_provider/downloads_path_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -54,8 +55,13 @@ class _QrCodeState extends State<QrCode> {
                   color: Colors.white,
                 ),
                 onPressed: () async {
-                  final status = await Permission.storage.request();
-                  if (status.isGranted) {
+                  Map<Permission, PermissionStatus> statuses = await [
+                    Permission.mediaLibrary,
+                    Permission.storage,
+                    Permission.photos,
+                  ].request();
+                  if (!statuses.values.contains(PermissionStatus.denied)) {
+                    print("granted");
                     _widgetShot();
                   }
                 },
@@ -64,27 +70,27 @@ class _QrCodeState extends State<QrCode> {
           ),
           body: FutureBuilder(
               future: Future.delayed(Duration(seconds: 3)),
-              builder: (ctx, snapshot) =>
-                  snapshot.connectionState == ConnectionState.waiting
-                      ? Center(
-                          child: JumpingText(
-                            'Generating QR Code...',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      : Screenshot(
-                          controller: screenshotController,
-                          child: TicketWithQrCode(
-                              name: widget.ticket.name,
-                              trainNo: widget.ticket.trainNo,
-                              source: widget.ticket.source,
-                              destination: widget.ticket.destination,
-                              date: widget.ticket.date,
-                              price: widget.ticket.price,
-                              ticketId: widget.ticketId)))),
+              builder: (ctx, snapshot) => snapshot.connectionState ==
+                      ConnectionState.waiting
+                  ? Center(
+                      child: JumpingText(
+                        'Generating QR Code...',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    )
+                  : Screenshot(
+                      controller: screenshotController,
+                      child: TicketWithQrCode(
+                          name: FirebaseAuth.instance.currentUser.displayName,
+                          trainNo: widget.ticket.trainNo,
+                          source: widget.ticket.source,
+                          destination: widget.ticket.destination,
+                          date: widget.ticket.journeyDate,
+                          price: widget.ticket.price,
+                          ticketId: widget.ticketId)))),
     );
   }
 
@@ -96,7 +102,6 @@ class _QrCodeState extends State<QrCode> {
       //Return path
       final pdf = pw.Document();
       final image = pw.MemoryImage(imageCapture);
-      print("width: ${image.width}");
       pdf.addPage(pw.Page(build: (pw.Context context) {
         return pw.Center(
           child: pw.Image(image),

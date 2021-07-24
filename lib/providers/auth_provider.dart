@@ -11,10 +11,18 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> googleSignIn() async {
     await _authRepo.googleSign();
+    notifyListeners();
   }
 
   Future<void> signUp({String email, String password, String name}) async {
     await _authRepo.signUp(email, password, name);
+    await FirebaseAuth.instance.currentUser.reload();
+    notifyListeners();
+  }
+
+  Future<void> signIn({String email, String password}) async {
+    await _authRepo.signIn(email, password);
+    notifyListeners();
   }
 
   Future<void> signOut() async {
@@ -38,7 +46,6 @@ class AuthProvider with ChangeNotifier {
   }
 
   Stream<User> get authState {
-    print("authState ${_authRepo.authState()}");
     return _authRepo.authState();
   }
 }

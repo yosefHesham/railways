@@ -10,7 +10,7 @@ import 'package:railways/widgets/train_appbar.dart';
 class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<AuthProvider>(context, listen: false).user;
+    User user = Provider.of<AuthProvider>(context).user;
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(

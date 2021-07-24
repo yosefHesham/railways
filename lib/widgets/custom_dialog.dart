@@ -14,7 +14,6 @@ class _CustomAlertDialogState extends State<CustomAlertDialog> {
   void _saveName(String value) {
     setState(() {
       name = value;
-      print("Name $name");
     });
   }
 

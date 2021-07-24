@@ -42,9 +42,9 @@ class PaymentFieldValidator {
   static validatePhoneNumber(String value) {
     if (_isFieldEmpty(value)) {
       return "Required Field";
-    } else if (!value.startsWith("010") ||
-        !value.startsWith("012") ||
-        !value.startsWith("011") ||
+    } else if (!value.startsWith("010") &&
+            !value.startsWith("012") &&
+            !value.startsWith("011") ||
         value.length < 11) {
       return "Invalid phone number";
     }

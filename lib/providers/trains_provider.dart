@@ -17,7 +17,6 @@ class TrainsProvider with ChangeNotifier {
   Train _selectedTrain;
   Map<String, dynamic> _selectedClass;
   List<Train> _resultTrains = [];
-  List<Train> _filteredTrains = [];
   List<Train> _tempTrains = [];
 
   bool get isBookingVisible {
@@ -29,7 +28,6 @@ class TrainsProvider with ChangeNotifier {
   }
 
   Train get selectedTrain {
-    print("selectedTrain :$_selectedTrain");
     return _selectedTrain;
   }
 
@@ -82,7 +80,6 @@ class TrainsProvider with ChangeNotifier {
   }
 
   void sortTrains(String sortType) {
-    print("sortType $sortType");
     if (sortType == "Departure") {
       _resultTrains.sort((a, b) =>
           int.parse(a.stopStations.first.departTime.split(":")[0]).compareTo(
@@ -108,7 +105,6 @@ class TrainsProvider with ChangeNotifier {
       _resultTrains = [..._tempTrains];
     } else if (!departAt.containsValue(true)) {
       _resultTrains = [..._tempTrains];
-      print(_filteredTrains.length);
     } else if (eq(filterValues, [true, false, false, false])) {
       _filter(earlyMorning[0], earlyMorning[1]);
     } else if (eq(filterValues, [false, true, false, false])) {
@@ -140,8 +136,6 @@ class TrainsProvider with ChangeNotifier {
           .firstWhere((element) => element.name == fromStation);
       int departTime = int.parse(from.departTime.split(":")[0]);
 
-      print("Depart at :$departTime");
-      print("start $start");
       if (departTime >= start && departTime <= end) {
         return true;
       }
@@ -176,7 +170,6 @@ class TrainsProvider with ChangeNotifier {
   }
 
   void fromTo(String from, String to, String date) {
-    print("fromTrain: $from toTrain :$to");
     _fromStation = from;
     _toStation = to;
     _date = date;

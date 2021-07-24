@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/helpers/payment_fields_validator.dart';
 import 'package:railways/model/ticket.dart';
@@ -142,14 +143,33 @@ class _BookingScreenState extends State<BookingScreen> {
                   bookDate: trainProv.bookDate);
               await updateAnalysisData(trainProv);
               final userId = user.uid;
+              String journeyStartsTemp =
+                  trainProv.fromStationOfSelectedTrain.departTime;
+              String journeyEndsTemp =
+                  trainProv.toStationOfSelectedTrain.arrivalTime;
+              DateTime journeyStart = DateFormat("hh:mm").parse(
+                  "${journeyStartsTemp.split(":")[0]}" +
+                      ":" +
+                      "${journeyStartsTemp.split(":")[1]}");
+              DateTime journeyEnd = DateFormat("hh:mm").parse(
+                  "${journeyEndsTemp.split(":")[0]}" +
+                      ":" +
+                      "${journeyEndsTemp.split(":")[1]}");
               Ticket ticket = Ticket(
-                date: trainProv.bookDate,
-                trainNo: trainProv.selectedTrain.number,
-                source: trainProv.fromStation,
-                destination: trainProv.toStation,
-                price: trainProv.selectedClass.entries.first.value,
-                name: name,
-              );
+                  journeyDate: trainProv.bookDate.analysisFormat(),
+                  bookingTime: DateFormat("HH:mm:ss").format(DateTime.now()),
+                  trainNo: trainProv.selectedTrain.number,
+                  source: trainProv.fromStation,
+                  destination: trainProv.toStation,
+                  price: trainProv.selectedClass.entries.first.value,
+                  bookingdate: DateFormat('EEE, d MMM')
+                      .format(DateTime.now())
+                      .analysisFormat(),
+                  journeyEndsAt: DateFormat("hh:mm a").format(journeyEnd),
+                  journeyStartsAt: DateFormat("hh:mm a").format(journeyStart),
+                  fareClass: trainProv.selectedClass.keys.first,
+                  noOfStops: trainProv.toStationOfSelectedTrain.orderInRoute -
+                      trainProv.fromStationOfSelectedTrain.orderInRoute);
               final docId = FirebaseFirestore.instance
                   .collection('profiles')
                   .doc(userId)

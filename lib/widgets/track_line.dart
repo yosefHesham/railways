@@ -47,7 +47,6 @@ class _TrackLineState extends State<TrackLine> {
       if (elapsedTime >= 0) {
         setState(() {
           fractionTime = elapsedTime / totalDuration;
-          print(fractionTime);
         });
       }
     });

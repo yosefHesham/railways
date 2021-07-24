@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:railways/helpers/signUp_form_validator.dart';
+import 'package:railways/providers/auth_provider.dart';
 import 'package:railways/widgets/custom_text_field.dart';
 import 'package:railways/widgets/signup_button.dart';
 
@@ -13,6 +15,8 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   String mail, password;
+  bool isLoading = false;
+
   final _paswordFocusNode = FocusNode();
   var _formKey = GlobalKey<FormState>();
 
@@ -84,10 +88,35 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(
                   height: 30,
                 ),
-                SignUpButton(
-                  //  onpressed: () {},
-                  text: 'sign in',
-                ),
+                isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SignUpButton(
+                        onpressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            try {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await Provider.of<AuthProvider>(context,
+                                      listen: false)
+                                  .signIn(email: mail, password: password);
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.of(context).pop();
+                            } catch (e) {
+                              ScaffoldMessenger.maybeOf(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text("Wrong email or password")));
+                            }
+                          }
+                        },
+                        text: 'sign in',
+                      ),
                 SizedBox(
                   height: 30,
                 ),

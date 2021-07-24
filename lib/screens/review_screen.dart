@@ -22,6 +22,8 @@ Map<num, dynamic> rateEvaluation = {
 
 class _ReviewScreenState extends State<ReviewScreen> {
   num cleanliness, comfort, descipline;
+
+  bool isLoading = false;
   void _saveClealliness(num rate) {
     setState(() {
       cleanliness = rate;
@@ -96,28 +98,43 @@ class _ReviewScreenState extends State<ReviewScreen> {
                 )
               ]),
               dividerWithMargin(),
-              GestureDetector(
-                onTap: null,
-                child: Card(
-                  color: Color(0xff2043B0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * .9,
-                    height: MediaQuery.of(context).size.height * .07,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text(
-                        'SUBMIT',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Public.textFieldFillColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 17,
+              isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : GestureDetector(
+                      onTap: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Review Submitted !"),
+                        ));
+                        await Future.delayed(Duration(seconds: 1));
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      child: Card(
+                        color: Color(0xff2043B0),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .9,
+                          height: MediaQuery.of(context).size.height * .07,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text(
+                              'SUBMIT',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Public.textFieldFillColor,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

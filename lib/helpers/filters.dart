@@ -11,3 +11,4 @@ Map<String, String> mapTimeToHours = {
   "Morning": "6am - 12pm",
   "Night": "6pm - 12am",
 };
+int maxOptions = 2;

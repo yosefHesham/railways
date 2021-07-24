@@ -66,10 +66,12 @@ class _TrainCardState extends State<TrainCard> {
                     .where((st) => st.name == trainProv.toStation)
                     .first;
                 return TripDuration(
-                  fromStation: fromStation,
-                  toStation: toStation,
-                  date: trainProv.date,
-                );
+                    fromTime: fromStation.departTime,
+                    toTime: toStation.departTime,
+                    date: trainProv.date,
+                    numOfStops:
+                        (toStation.orderInRoute - fromStation.orderInRoute)
+                            .toString());
               },
             ),
             SizedBox(
@@ -87,7 +89,7 @@ class _TrainCardState extends State<TrainCard> {
                         index: i,
                         changeIndex: changeIndex,
                         borderColor: currentIndex == null || currentIndex != i
-                            ? Colors.green.shade400
+                            ? Public.accent
                             : Public.textFieldFillColor,
                         trainNum: widget.train.number,
                       )),

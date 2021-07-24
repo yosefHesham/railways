@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:railways/providers/trains_provider.dart';
-import 'package:railways/public/colors.dart';
 
 // ignore: must_be_immutable
 class DegreeBox extends StatefulWidget {
@@ -9,6 +8,7 @@ class DegreeBox extends StatefulWidget {
   final num price;
   final String trainNum;
   Color borderColor;
+
   int index;
   final Function changeIndex;
 
@@ -40,21 +40,25 @@ class _DegreeBoxState extends State<DegreeBox> {
           widget.changeIndex(widget.index);
         },
         child: Container(
-          width: MediaQuery.of(context).size.width * .2,
+          width: MediaQuery.of(context).size.width * .25,
           height: 50,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
               border: Border.all(color: widget.borderColor),
-              color: Colors.green.shade200.withOpacity(.2)),
+              color: widget.borderColor.withOpacity(.5)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(widget.degree),
-              Text('${widget.price}'),
+              Text(
+                '${widget.degree} ${widget.price}',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+              ),
               Text(
                 "EGP",
                 style: TextStyle(
-                    color: Public.accent, fontWeight: FontWeight.w400),
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold),
               )
             ],
           ),

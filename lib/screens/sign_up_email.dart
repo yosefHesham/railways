@@ -15,6 +15,8 @@ class SignUpEmailScreen extends StatefulWidget {
 }
 
 class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     var _formKey = GlobalKey<FormState>();
@@ -112,16 +114,36 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                 SizedBox(
                   height: 30,
                 ),
-                SignUpButton(
-                  onpressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                      await Provider.of<AuthProvider>(context, listen: false)
-                          .signUp(name: name, email: mail, password: password);
-                    }
-                  },
-                  text: 'Sign up',
-                )
+                isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SignUpButton(
+                        onpressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            try {
+                              await Provider.of<AuthProvider>(context,
+                                      listen: false)
+                                  .signUp(
+                                      name: name,
+                                      email: mail,
+                                      password: password);
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.of(context).pop();
+                            } catch (e) {
+                              ScaffoldMessenger.maybeOf(context).showSnackBar(
+                                  SnackBar(content: Text("Already in use")));
+                            }
+                          }
+                        },
+                        text: 'Sign up',
+                      )
               ],
             ),
           ),

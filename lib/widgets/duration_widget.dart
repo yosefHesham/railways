@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:railways/model/stations.dart';
 
 import 'distance_line.dart';
 
+// ignore: must_be_immutable
 class TripDuration extends StatefulWidget {
-  final StopStations fromStation, toStation;
+  final String fromTime, toTime;
   final String date;
+  String numOfStops;
   TripDuration(
-      {@required this.fromStation, @required this.toStation, this.date});
+      {@required this.fromTime,
+      @required this.toTime,
+      this.date,
+      this.numOfStops});
 
   @override
   _TripDurationState createState() => _TripDurationState();
@@ -22,9 +26,9 @@ class _TripDurationState extends State<TripDuration> {
   }
 
   getDuration() {
-    List<String> fromStString = widget.fromStation.departTime.split(':');
+    List<String> fromStString = widget.fromTime.split(':');
     List<int> fromTime = fromStString.map((e) => int.parse(e)).toList();
-    List<String> toStString = widget.toStation.arrivalTime.split(':');
+    List<String> toStString = widget.toTime.split(':');
     List<int> toTime = toStString.map((e) => int.parse(e)).toList();
 
     setState(() {
@@ -39,19 +43,19 @@ class _TripDurationState extends State<TripDuration> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        stopTime(widget.date, widget.fromStation.departTime),
+        stopTime(widget.date, widget.fromTime),
         SizedBox(
           width: 20,
         ),
         Column(
           children: [
             Text(
-              '${duration[0] % 24}h ${(duration[1].abs())}m',
+              '${duration[0] % 12}h ${(duration[1].abs())}m',
               style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
             DistanceLine(),
             Text(
-              '${widget.toStation.orderInRoute - widget.fromStation.orderInRoute}',
+              "${widget.numOfStops} stops",
               style: TextStyle(color: Colors.grey, fontSize: 12),
             )
           ],
@@ -59,7 +63,7 @@ class _TripDurationState extends State<TripDuration> {
         SizedBox(
           width: 20,
         ),
-        stopTime(widget.date, widget.toStation.arrivalTime),
+        stopTime(widget.date, widget.toTime),
       ],
     );
   }

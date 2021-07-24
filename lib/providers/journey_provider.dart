@@ -19,7 +19,7 @@ class JourneyProvider with ChangeNotifier {
           bookDate: bookDate,
           selectedClass: selectedClass);
     } catch (e) {
-      print("errro on booking :$e");
+      throw e;
     }
   }
 

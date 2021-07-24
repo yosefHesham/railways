@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:railways/model/train.dart';
 import 'package:railways/public/colors.dart';
 import 'package:railways/widgets/timeline_rightChild.dart';
@@ -19,22 +20,22 @@ class _RunningStatusScreenState extends State<RunningStatusScreen> {
   initState() {
     super.initState();
     Future.delayed(Duration.zero).then((_) {
-      print(DateTime.now().toString());
       String departTime = widget.train.stopStations.first.departTime;
       String arrivalTime = widget.train.stopStations.last.arrivalTime;
-      if (DateTime.now().hour < int.parse(departTime.substring(0, 2)) ||
-          (DateTime.now().hour == int.parse(departTime.substring(0, 2)) &&
-              DateTime.now().minute < int.parse(departTime.substring(3, 5)))) {
+      List<String> now =
+          DateFormat("HH:mm:ss").format(DateTime.now()).split(":");
+      if (int.parse(now[0]) < int.parse(departTime.substring(0, 2)) ||
+          (int.parse(now[0]) == int.parse(departTime.substring(0, 2)) &&
+              int.parse(now[1]) < int.parse(departTime.substring(3, 5)))) {
         setState(() {
           notDeparted = true;
         });
-      } else if (DateTime.now().hour > int.parse(arrivalTime.substring(0, 2)) ||
-          (DateTime.now().hour == int.parse(arrivalTime.substring(0, 2)) &&
-              DateTime.now().minute > int.parse(arrivalTime.substring(3, 5)))) {
+      } else if (int.parse(now[0]) > int.parse(arrivalTime.substring(0, 2)) ||
+          (int.parse(now[0]) == int.parse(arrivalTime.substring(0, 2)) &&
+              int.parse(now[1]) > int.parse(arrivalTime.substring(3, 5)))) {
         setState(() {
           isArrived = true;
         });
-        print("isArrived $isArrived");
       }
     });
   }

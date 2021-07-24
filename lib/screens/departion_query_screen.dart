@@ -25,7 +25,7 @@ class _StationQueryState extends State<StationQuery> {
     return Scaffold(
         appBar: AppBar(
             leading: IconButton(
-              icon: Icon(Icons.bluetooth_disabled),
+              icon: Icon(Icons.arrow_left_sharp),
               onPressed: () => Navigator.of(context).pop(),
               color: Public.hintTextFieldColor,
             ),
@@ -79,7 +79,7 @@ class _StationQueryState extends State<StationQuery> {
                       hintText: widget.hintText,
                       hintStyle: TextStyle(color: Public.hintTextFieldColor),
                       prefixIcon: Icon(
-                        Icons.ac_unit,
+                        Icons.circle,
                         color: Public.textFieldColor,
                         size: 18,
                       ),

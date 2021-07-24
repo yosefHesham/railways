@@ -46,6 +46,24 @@ class AuthRepo {
     _auth.currentUser.delete();
   }
 
+  Future<void> signIn(
+    String email,
+    String password,
+  ) async {
+    try {
+      print("email $email");
+      print("ppassword: $password");
+      print("SignedIn");
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      var errorMsg = "Error While trying to sign up !";
+      if (e.toString().toLowerCase().contains("wrong password")) {
+        errorMsg = "Wrong email or password";
+        throw GoogleException(errorMsg);
+      }
+    }
+  }
+
   Future<void> updateName(String name) async {
     await _auth.currentUser.updateDisplayName(name);
   }

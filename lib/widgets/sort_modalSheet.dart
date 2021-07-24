@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:railways/helpers/filters.dart';
 import 'package:railways/providers/trains_provider.dart';
-import 'package:railways/public/colors.dart';
 
 class SortModalSheet extends StatefulWidget {
   @override
@@ -73,7 +71,7 @@ class _SortModalSheetState extends State<SortModalSheet> {
 
   Widget radioButtonTile({String lable, Function onChanged}) {
     return Container(
-      width: 200,
+      width: 190,
       child: RadioListTile(
         title: Text(
           lable,

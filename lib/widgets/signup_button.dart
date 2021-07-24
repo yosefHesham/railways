@@ -15,7 +15,9 @@ class SignUpButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(11),
       ),
       child: TextButton(
-        onPressed: () => onpressed(),
+        onPressed: () async {
+          await onpressed();
+        },
         child: Text(
           text,
           style: TextStyle(
