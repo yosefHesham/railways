@@ -117,11 +117,13 @@ class _SearchWidgetState extends State<SearchWidget>
   }
 
   Future<DateTime> chooseDate(BuildContext context) async {
-    return await showDatePicker(
+    DateTime date = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 6)));
+    Provider.of<TrainsProvider>(context, listen: false).chooseDate(date);
+    return date;
   }
 
   Widget switchStationsButton() {

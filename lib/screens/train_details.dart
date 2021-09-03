@@ -32,11 +32,14 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
         runningDays.add(element.key);
       }
     });
-    final from = Provider.of<TrainsProvider>(context, listen: false)
+    final from = Provider.of<TrainsProvider>(context, listen: true)
         .fromStationOfSelectedTrain;
-    final to = Provider.of<TrainsProvider>(context, listen: false)
+    final to = Provider.of<TrainsProvider>(context, listen: true)
         .toStationOfSelectedTrain;
-
+    print("trainNo ${widget.train.number}");
+    DateTime chosenDate = Provider.of<TrainsProvider>(
+      context,
+    ).chosenDate;
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -184,7 +187,11 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
                   children: [
                     InkWell(
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => RunningStatusScreen(widget.train))),
+                          builder: (ctx) => RunningStatusScreen(
+                              Provider.of<TrainsProvider>(context,
+                                      listen: false)
+                                  .selectedTrain,
+                              chosenDate))),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 30),
                         child: Column(
@@ -320,27 +327,14 @@ class _TrainDetailScreenState extends State<TrainDetailScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          child: Center(
-            child: FittedBox(
-              child: Text(
-                name,
-                style: TextStyle(
-                  fontSize: 18,
-                  height: 1.2,
-                ),
-              ),
+        Center(
+          child: Text(
+            name,
+            style: TextStyle(
+              fontSize: 18,
+              height: 1.2,
             ),
           ),
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          width: 80,
-          height: 30,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(color: Colors.grey, spreadRadius: 1.5),
-              ]),
         ),
         Text(
           time.substring(0, 5),

@@ -40,6 +40,7 @@ class PaymentFieldValidator {
   }
 
   static validatePhoneNumber(String value) {
+    String notNumber;
     if (_isFieldEmpty(value)) {
       return "Required Field";
     } else if (!value.startsWith("010") &&
@@ -48,7 +49,12 @@ class PaymentFieldValidator {
         value.length < 11) {
       return "Invalid phone number";
     }
-    return null;
+    // ignore: deprecated_member_use
+    // ignore: missing_return
+    int.parse(value, onError: (_) {
+      notNumber = "Enter numbers only !";
+    });
+    return notNumber;
   }
 
   static validateExpireDate(String value) {

@@ -112,6 +112,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                   SnackBar(
                                       content:
                                           Text("Wrong email or password")));
+                              setState(() {
+                                isLoading = false;
+                              });
                             }
                           }
                         },

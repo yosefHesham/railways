@@ -139,6 +139,10 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                             } catch (e) {
                               ScaffoldMessenger.maybeOf(context).showSnackBar(
                                   SnackBar(content: Text("Already in use")));
+                                    setState(() {
+                                isLoading = false;
+                              });
+                                  
                             }
                           }
                         },

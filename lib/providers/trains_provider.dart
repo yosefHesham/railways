@@ -15,6 +15,7 @@ class TrainsProvider with ChangeNotifier {
   String _bookDate;
   bool _isBookingVisible = false;
   Train _selectedTrain;
+  DateTime _chosenDate;
   Map<String, dynamic> _selectedClass;
   List<Train> _resultTrains = [];
   List<Train> _tempTrains = [];
@@ -23,12 +24,22 @@ class TrainsProvider with ChangeNotifier {
     return _isBookingVisible;
   }
 
+  DateTime get chosenDate {
+    return _chosenDate ?? DateTime.now();
+  }
+
   Map<String, dynamic> get selectedClass {
     return _selectedClass;
   }
 
   Train get selectedTrain {
     return _selectedTrain;
+  }
+
+  void chooseDate(DateTime date) {
+    _chosenDate = date;
+
+    notifyListeners();
   }
 
   String get bookDate {

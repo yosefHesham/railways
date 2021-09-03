@@ -51,10 +51,8 @@ class AuthRepo {
     String password,
   ) async {
     try {
-      print("email $email");
-      print("ppassword: $password");
-      print("SignedIn");
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      print("SignedIn");
     } catch (e) {
       var errorMsg = "Error While trying to sign up !";
       if (e.toString().toLowerCase().contains("wrong password")) {

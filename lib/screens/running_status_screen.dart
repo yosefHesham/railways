@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:railways/model/train.dart';
+import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/colors.dart';
 import 'package:railways/widgets/timeline_rightChild.dart';
 import 'package:railways/widgets/track_line.dart';
@@ -8,36 +10,64 @@ import 'package:railways/widgets/track_line.dart';
 // ignore: must_be_immutable
 class RunningStatusScreen extends StatefulWidget {
   Train train;
-  RunningStatusScreen(this.train);
+  DateTime chosenDate;
+
+  RunningStatusScreen(this.train, this.chosenDate);
   @override
   _RunningStatusScreenState createState() => _RunningStatusScreenState();
 }
 
-var notDeparted = false;
-var isArrived = false;
+String trainStatus = "";
 
 class _RunningStatusScreenState extends State<RunningStatusScreen> {
   initState() {
     super.initState();
-    Future.delayed(Duration.zero).then((_) {
-      String departTime = widget.train.stopStations.first.departTime;
-      String arrivalTime = widget.train.stopStations.last.arrivalTime;
-      List<String> now =
-          DateFormat("HH:mm:ss").format(DateTime.now()).split(":");
-      if (int.parse(now[0]) < int.parse(departTime.substring(0, 2)) ||
-          (int.parse(now[0]) == int.parse(departTime.substring(0, 2)) &&
-              int.parse(now[1]) < int.parse(departTime.substring(3, 5)))) {
-        setState(() {
-          notDeparted = true;
-        });
-      } else if (int.parse(now[0]) > int.parse(arrivalTime.substring(0, 2)) ||
-          (int.parse(now[0]) == int.parse(arrivalTime.substring(0, 2)) &&
-              int.parse(now[1]) > int.parse(arrivalTime.substring(3, 5)))) {
-        setState(() {
-          isArrived = true;
-        });
-      }
-    });
+    String now = DateFormat('EEE, d MMM')
+        .format(DateTime.now())
+        .split(",")[0]
+        .toLowerCase();
+    Train train =
+        Provider.of<TrainsProvider>(context, listen: false).selectedTrain;
+    if (!train.weekDayRuns[now]) {
+      setState(() {
+        trainStatus = "OFF Day";
+      });
+    } else if (widget.chosenDate.isAfter(DateTime.now())) {
+      setState(() {
+        trainStatus = "Train Arrived Destination";
+      });
+    } else {
+      Future.delayed(Duration.zero).then((_) {
+        Train train;
+        train =
+            Provider.of<TrainsProvider>(context, listen: false).selectedTrain;
+        String departTime = train.stopStations.first.departTime;
+        String arrivalTime = train.stopStations.last.arrivalTime;
+
+        List<String> now =
+            DateFormat("HH:mm:ss").format(DateTime.now()).split(":");
+        print(now);
+        if (int.parse(now[0]) < int.parse(departTime.substring(0, 2)) ||
+            (int.parse(now[0]) == int.parse(departTime.substring(0, 2)) &&
+                int.parse(now[1]) < int.parse(departTime.substring(3, 5)))) {
+          setState(() {
+            trainStatus = "Not Departed";
+          });
+        } else if (int.parse(now[0]) > int.parse(arrivalTime.substring(0, 2)) ||
+            (int.parse(now[0]) == int.parse(arrivalTime.substring(0, 2)) &&
+                int.parse(now[1]) > int.parse(arrivalTime.substring(3, 5)))) {
+          print(widget.train.stopStations.last.name);
+          setState(() {
+            trainStatus = "Train Arrived Destination";
+          });
+        }
+      });
+    }
+  }
+
+  dispose() {
+    print("Disposeed");
+    super.dispose();
   }
 
   @override
@@ -50,18 +80,16 @@ class _RunningStatusScreenState extends State<RunningStatusScreen> {
             color: Theme.of(context).primaryColor,
             child: ListTile(
                 leading: IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    dispose();
+                  },
                   icon: Icon(
                     Icons.arrow_back,
                     color: Public.textFieldColor,
                   ),
                 ),
-                subtitle: Text(
-                    notDeparted
-                        ? "Not Departed"
-                        : isArrived
-                            ? "Train Arrived Destination"
-                            : "Train Running",
+                subtitle: Text(trainStatus,
                     style: TextStyle(
                         fontSize: 18,
                         color: Public.textFieldFillColor,
@@ -82,6 +110,7 @@ class _RunningStatusScreenState extends State<RunningStatusScreen> {
               itemBuilder: (ctx, i) =>
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     TrackLine(
+                      choseDate: widget.chosenDate,
                       radius:
                           i == widget.train.stopStations.length - 1 ? 5 : 0.0,
                       firstStaion: i == widget.train.stopStations.length - 1

@@ -2,7 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:railways/model/stations.dart';
+import 'package:railways/model/train.dart';
+import 'package:railways/providers/trains_provider.dart';
 import 'package:railways/public/colors.dart';
 
 // ignore: must_be_immutable
@@ -10,11 +14,12 @@ class TrackLine extends StatefulWidget {
   StopStations firstStaion;
   StopStations secondStaion;
   double radius;
-  TrackLine({
-    @required this.firstStaion,
-    @required this.secondStaion,
-    this.radius,
-  });
+  DateTime choseDate;
+  TrackLine(
+      {@required this.firstStaion,
+      @required this.secondStaion,
+      this.radius,
+      this.choseDate});
 
   @override
   _TrackLineState createState() => _TrackLineState();
@@ -23,18 +28,32 @@ class TrackLine extends StatefulWidget {
 class _TrackLineState extends State<TrackLine> {
   var fractionFactor = .001;
   var fractionTime = 0.0;
+  bool zero = false;
   @override
   initState() {
     super.initState();
-    estimateTime();
+    String now = DateFormat('EEE, d MMM')
+        .format(DateTime.now())
+        .split(",")[0]
+        .toLowerCase();
+    Train train =
+        Provider.of<TrainsProvider>(context, listen: false).selectedTrain;
+    if (!train.weekDayRuns[now]) {
+      fractionTime = 0;
+    } else if (DateTime.now().day == widget.choseDate.day &&
+        widget.choseDate.hour > DateTime.now().hour &&
+        widget.choseDate.minute > DateTime.now().minute) {
+      setState(() {
+        zero = true;
+      });
+      print("a7a");
+    } else {
+      estimateTime();
+    }
   }
 
   void estimateTime() {
     Future.delayed(Duration.zero).then((_) {
-      print(
-          " firstStation: ${widget.firstStaion.name}${widget.firstStaion.departTime}");
-      print(
-          " firstStation: ${widget.secondStaion.name}${widget.secondStaion.arrivalTime}");
       var arrivalTimeString = widget.secondStaion.arrivalTime;
       var arrivalTime = (int.parse(arrivalTimeString.substring(0, 2)) * 60) +
           int.parse(arrivalTimeString.substring(3, 5));
@@ -67,11 +86,13 @@ class _TrackLineState extends State<TrackLine> {
         ),
         child: Stack(children: [
           FractionallySizedBox(
-              heightFactor: fractionTime > 1
+              heightFactor: zero
                   ? 1
-                  : fractionTime < 0
-                      ? 0.0
-                      : fractionTime,
+                  : fractionTime > 1
+                      ? 1
+                      : fractionTime < 0
+                          ? 0.0
+                          : fractionTime,
               child: Container(
                 alignment: Alignment.bottomCenter,
                 decoration: BoxDecoration(
@@ -81,6 +102,7 @@ class _TrackLineState extends State<TrackLine> {
               )),
           Container(
             width: 10,
+            padding: EdgeInsets.only(bottom: 20),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(widget.radius)),
             child: Column(
